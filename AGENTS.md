@@ -188,23 +188,46 @@ For each company, provide a report strictly following the template below. All nu
 
 # Clone Website (on request)
 
+We need to fix the clone website prompt to address:
+
+  1. Suck colors – enforce a premium, modern palette (off-white, zinc, one accent) and ban generic AI colors.
+  2. Missing placeholder images – use picsum.photos/seed/… with descriptive seeds for hero, cards, etc. Use site theme images, not random (e.g., delivery company Mariya means using delivers images, not woman)
+  3. Empty "Ключевые блоки" section in offer.html – ensure each section in index.html has a unique id so the screenshot script can capture them, and the gallery is populated.
+  4. Don't install packages. 
+
 You are a frontend engineer. Given a reference website URL (the user will provide it), you must:
 
-1. Create a single HTML file that clones the visual style of the reference site – use its colors, typography, layout, and keep all anchor links (`<a href="...">`) working (use `#` for missing pages). Use placeholder images (e.g., picsum.photos) but match the aspect ratios.
-2. Output the complete HTML code in your response.
-3. Always try to make cool design (OVERRIDE: VARIANCE: 8, MOTION: 6, DENSITY: 4). Force 8/6/4 regardless of industry. Do not drop to 'trust-first' defaults.
-4. Provide a bash script that the user can run in an empty folder. The script should:
-   - Create a directory named `[site-name]-demo` (replace with a sensible name) using mkdir.
-   - Save the HTML as `index.html` inside that directory.
-   - Use **Puppeteer** (assumed to be installed globally) to take a full‑page screenshot of the page and convert it to Base64.
-   - Generate an `offer.html` file that contains:
-     - The screenshot displayed inline (embedded via Base64).
-     - A description in **Russian** explaining how the new design improves the client’s business (speed, mobile‑friendliness, conversion).
-     - A clear call‑to‑action (contact for a full proposal)
+  1. Create a single HTML file that clones the visual style of the reference site – use its colors, typography, layout, and keep all anchor links (<a href="...">) working (use # for missing pages).
+  CRITICAL design upgrades:
+     * Palette: Use off-white (#F9FAFB), zinc‑950 (#18181B) for text, zinc‑500 (#71717A) for secondary, one accent (e.g., #336DFF). No pure black, no over‑saturated colors, no purple/blue AI gradients.
+     * Typography: Use Geist, Outfit, Cabinet Grotesk, or Satoshi – never Inter.
+     * Images: Use picsum.photos with descriptive seeds for hero, feature cards, testimonials, etc.
+     * Layout: Asymmetric or split hero, not centered text-only. Bento grids with varied cell sizes.
 
-The final output files (`index.html` and `offer.html`) must reside in that directory. Bash mode by default. Give me the bash scripts - for creating dir and index.html and for creating screenshots and inserting it into offer.html
+  2. Every major section (hero, features, testimonials, CTA, etc.) must have a unique id (e.g., id="hero", id="features", id="testimonials"). This is mandatory for the screenshot script.
 
-You just give me one script for all of this. This script gonna go to the terminal.
+  3. Output the complete HTML code in your response.
+
+  4. Provide a single bash script that the user can run in an empty folder. The script must:
+     * Create a directory named [site‑name]-demo (replace with a sensible name).
+     * Save the HTML as index.html inside that directory.
+     * Use Puppeteer (globally installed) to take a full‑page screenshot of index.html and individual screenshots of every section (section‑<id>.base64).
+     * Generate offer.html containing:
+
+       * The full‑page screenshot displayed inline (Base64).
+       * A gallery (Ключевые блоки) with each section screenshot and its id as label (e.g., "hero", "features").
+       * A description in Russian explaining improvements (speed, mobile‑friendliness, conversion).
+       * A clear call‑to‑action (contact for full proposal).
+
+  5. The gallery ({{SECTION_GALLERY}}) must be non‑empty – ensure the script captures at least one section.
+  6. For `offer.html` use only inline css styles for using it in email text.
+  7. HEADER & FOOTER: The Header must be a glassmorphism sticky navigation bar with backdrop-filter: blur(). The Footer must be minimal and aligned with the visual style.
+  8. NO UNNECESSARY PILLS/EYEBROWS: Do not place a small pill badge (like "О компании") directly above a large H2 heading unless the section explicitly requires a sub-category. Use only the section-eyebrow (e.g., "Преимущества") where strictly necessary. The layout must feel minimalist, not cluttered with micro-elements.
+  9. STRICT BAN ON EMOJIS: You MUST NOT use emojis (🚚, 📦, 🌍, 🛡️, etc.) anywhere in the code, alt text, or visible text. You MUST replace them with clean inline SVG paths or from premium icon libraries (Phosphor, Radix, Material Design Icons) via inline <svg> code.
+  10. ICON CONSISTENCY: Do NOT use colored circles or varied background shapes for icons. Icons must be monochromatic, use the same stroke width, and inherit color from the text color (or CSS variables) without wrappers.
+  11. BENTO GRID INTEGRITY: If a Bento grid card uses `col-span-2` or `row-span-2`, it MUST contain a real image (<img src="picsum.photos/seed/...">) or a dense list of features to fill the space. A large empty space inside a spanned grid card is considered a visual failure.
+
+Then you gives me the one bash script I insert into terminal (everything is preinstalled) and run it. 
 
 ---
 
@@ -222,7 +245,7 @@ sed "s|{{FULL_SCREENSHOT}}|$FULL_SCREENSHOT|g" template.html > index.html
 
 ### The offer.html script template
 
-Give the following as bash code. Don't forget to update the text.
+Give the following as bash code. Don't forget to update the description about sections in Section Gallery and Benefits with Big Numbers sections to make offer fully and having actual pain fixed Big Numbers.
 
 ```bash
 #!/bin/bash
@@ -295,140 +318,83 @@ NODE_SCRIPT
 # ===== Create offer.html template =====
 cat > "${OUTPUT_DIR}/offer.html" <<'OFFER_EOF'
 <!DOCTYPE html>
-<html>
+<html style="box-sizing: border-box;">
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Демонстрация нового дизайна от Rovno.dev</title>
-  <style>
-    /* Global resets for inline styles to work cleanly */
-    body {
-      margin: 0;
-      font-family: 'Inter', system-ui, -apple-system, sans-serif;
-      line-height: 1.6;
-      color: #1a1a1a;
-      background: #f4f6fa;
-      -webkit-font-smoothing: antialiased;
-    }
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-    * {
-      box-sizing: border-box;
-    }
-
-    /* Button hover effects (can't be inline) */
-    .cta-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(51, 109, 255, 0.35);
-    }
-    .cta-btn:active {
-      transform: scale(0.97);
-    }
-
-    /* Two‑column gallery for section screenshots */
-    .section-gallery {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      margin: 20px 0;
-    }
-    .section-gallery img {
-      width: 100%;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-    }
-    .section-gallery p {
-      text-align: center;
-      font-size: 13px;
-      color: #555;
-      margin-top: 4px;
-    }
-    @media (max-width: 600px) {
-      .section-gallery {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
+<head style="box-sizing: border-box;">
+  <meta charset="UTF-8" style="box-sizing: border-box;">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" style="box-sizing: border-box;">
+  <title style="box-sizing: border-box;">Демонстрация нового дизайна от Rovno.dev</title>
+  
 </head>
 
-<body>
-  <div style="max-width: 800px; margin: 40px auto; padding: 32px; background: #ffffff; border-radius: 24px; box-shadow: 0 8px 40px rgba(0, 0, 0, 0.06);">
+<body style="box-sizing: border-box;margin: 0;font-family: 'Inter', system-ui, -apple-system, sans-serif;line-height: 1.6;color: #1a1a1a;background: #f4f6fa;-webkit-font-smoothing: antialiased;">
+  <div style="max-width: 800px;margin: 40px auto;padding: 32px;background: #ffffff;border-radius: 24px;box-shadow: 0 8px 40px rgba(0, 0, 0, 0.06);box-sizing: border-box;">
 
     <!-- Logo -->
-    <svg width="164" height="41" viewBox="0 0 164 41" fill="none" xmlns="http://www.w3.org/2000/svg" >
-      <path d="M40.0315 0H0V40.0315H40.0315V0Z" fill="#181818" />
-      <path d="M23.3477 32.1152V31.2475H25.0336V9.7522H23.3477V8.87109H25.9303V32.1152H23.3477Z" fill="#ffffff" />
-      <path d="M16.3981 32.1152V31.2475H14.7122V9.7522H16.3981V8.87109H13.8154V32.1152H16.3981Z" fill="#ffffff" />
-      <path d="M49.0713 15.6484H55.3188C56.1611 15.6484 56.8163 15.6958 57.2843 15.7906C57.7678 15.8696 58.228 16.0592 58.6648 16.3594C59.1172 16.6755 59.4837 17.1258 59.7645 17.7105C60.0609 18.2952 60.2091 18.9034 60.2091 19.5354C60.2091 19.7092 60.2013 19.8752 60.1857 20.0333C60.1702 20.1912 60.1077 20.452 59.9986 20.8154C59.8893 21.1631 59.7411 21.479 59.554 21.7635C59.3668 22.0321 59.0625 22.3165 58.6414 22.6167C58.2359 22.9169 57.7523 23.154 57.1907 23.3278C57.799 24.1811 58.6726 25.5794 59.8113 27.523H62.0109V29.4665H58.4075C57.7522 28.0286 56.9956 26.654 56.1377 25.3425C55.6386 24.584 55.272 24.102 55.038 23.8966C54.8039 23.6754 54.4998 23.5648 54.1255 23.5648H52.9321V27.523H54.9678V29.4665H49.0713V27.523H50.8964V17.592H49.0713V15.6484ZM55.3188 17.592H52.9321V21.6213H54.6636C55.896 21.6213 56.7617 21.4553 57.2609 21.1235C57.7912 20.7601 58.0565 20.2071 58.0565 19.4644C58.0565 18.7375 57.8303 18.2476 57.3779 17.9949C56.9411 17.7262 56.2547 17.592 55.3188 17.592Z" fill="#181818" />
-      <path d="M65.251 27.7606C64.0967 26.3543 63.5195 24.624 63.5195 22.5699C63.5195 20.5157 64.0967 18.7855 65.251 17.3792C66.4209 15.957 67.934 15.2461 69.7904 15.2461C71.6622 15.2461 73.1755 15.9492 74.3297 17.3555C75.4841 18.7618 76.0613 20.492 76.0613 22.5462C76.0613 24.6003 75.4763 26.3307 74.3063 27.7369C73.1521 29.1432 71.6467 29.8464 69.7904 29.8464C67.934 29.8464 66.4209 29.1512 65.251 27.7606ZM65.6722 22.5462C65.6722 23.9999 66.0466 25.2403 66.7953 26.2674C67.5441 27.2944 68.5425 27.808 69.7904 27.808C71.0384 27.808 72.0366 27.3024 72.7854 26.2911C73.5342 25.264 73.9086 24.0158 73.9086 22.5462C73.9086 21.1241 73.5342 19.8916 72.7854 18.8488C72.0523 17.8058 71.0539 17.2844 69.7904 17.2844C68.5425 17.2844 67.5441 17.8058 66.7953 18.8488C66.0466 19.8758 65.6722 21.1083 65.6722 22.5462Z" fill="#181818" />
-      <path d="M84.3789 26.5276L87.7015 17.592H85.5956V15.6484H91.3284V17.592H89.7841L85.3616 29.4665H83.3493L78.9738 17.592H77.2891V15.6484H83.0452V17.592H81.1265L84.3789 26.5276Z" fill="#181818" />
-      <path d="M93.6016 15.6484H98.0708L103.546 25.9113H103.944V17.592H101.604V15.6484H107.383V17.592H105.816V29.751H103.312L97.7198 19.3222H97.2987V27.523H99.6619V29.4665H93.6016V27.523H95.4267V17.592H93.6016V15.6484Z" fill="#181818" />
-      <path d="M110.483 27.7606C109.329 26.3543 108.752 24.624 108.752 22.5699C108.752 20.5157 109.329 18.7855 110.483 17.3792C111.653 15.957 113.167 15.2461 115.023 15.2461C116.895 15.2461 118.408 15.9492 119.562 17.3555C120.717 18.7618 121.294 20.492 121.294 22.5462C121.294 24.6003 120.709 26.3307 119.539 27.7369C118.385 29.1432 116.879 29.8464 115.023 29.8464C113.167 29.8464 111.653 29.1512 110.483 27.7606ZM110.905 22.5462C110.905 23.9999 111.279 25.2403 112.028 26.2674C112.777 27.2944 113.775 27.808 115.023 27.808C116.271 27.808 117.269 27.3024 118.018 26.2911C118.767 25.264 119.141 24.0158 119.141 22.5462C119.141 21.1241 118.767 19.8916 118.018 18.8488C117.285 17.8058 116.286 17.2844 115.023 17.2844C113.775 17.2844 112.777 17.8058 112.028 18.8488C111.279 19.8758 110.905 21.1083 110.905 22.5462Z" fill="#181818" />
-      <path d="M125.824 29.6047C125.404 29.6047 125.044 29.4525 124.743 29.148C124.442 28.8434 124.292 28.4786 124.292 28.0534C124.292 27.6282 124.442 27.2633 124.743 26.9588C125.044 26.6543 125.404 26.502 125.824 26.502C126.243 26.502 126.603 26.6543 126.904 26.9588C127.204 27.2633 127.355 27.6282 127.355 28.0534C127.355 28.3349 127.284 28.5935 127.143 28.8291C127.006 29.0647 126.821 29.2542 126.589 29.398C126.363 29.5358 126.107 29.6047 125.824 29.6047Z" fill="#181818" />
-      <path d="M137.987 29.8319C137.746 29.8319 137.467 29.724 137.147 29.5082C136.854 29.3195 136.588 29.0902 136.349 28.8206C136.109 28.5239 135.989 28.2543 135.989 28.0115C135.989 27.688 136.096 27.2699 136.309 26.7575C136.521 26.2452 136.789 25.7059 137.108 25.1395C137.428 24.5463 137.733 24.0069 138.026 23.5214C138.345 23.0361 138.586 22.6586 138.745 22.3888C138.532 22.6586 138.199 23.0765 137.746 23.6428C137.294 24.1821 136.789 24.7889 136.23 25.4631C135.696 26.1103 135.137 26.7441 134.552 27.3643C133.993 27.9576 133.474 28.4565 132.995 28.8609C132.515 29.2385 132.13 29.4273 131.837 29.4273C131.65 29.4273 131.33 29.252 130.878 28.9014C130.453 28.5239 130.239 27.9576 130.239 27.2025C130.239 26.5823 130.426 25.8272 130.798 24.9372C131.198 24.0473 131.717 23.1305 132.356 22.1866C132.995 21.2157 133.686 20.3123 134.432 19.4764C135.204 18.6403 135.962 17.9662 136.708 17.4538C137.48 16.9414 138.173 16.6852 138.785 16.6852C139.264 16.6852 139.731 16.847 140.183 17.1706C140.635 17.4673 140.902 18.0201 140.981 18.8291C141.567 18.047 142.153 17.292 142.738 16.5638C143.351 15.8087 144.203 14.8245 145.294 13.6109C145.427 13.4491 145.68 13.1659 146.053 12.7614C146.425 12.33 146.852 11.8715 147.33 11.3861C147.81 10.8737 148.276 10.4153 148.729 10.0108C149.208 9.57926 149.608 9.30964 149.926 9.20171C150.06 9.14782 150.326 9.22866 150.726 9.44451C151.124 9.63329 151.325 9.87596 151.325 10.1725C151.325 10.3343 151.258 10.4828 151.124 10.6175C150.965 10.8063 150.685 11.0894 150.286 11.467C149.914 11.8445 149.487 12.249 149.007 12.6806C148.529 13.112 148.076 13.5165 147.65 13.8941C147.251 14.2447 146.972 14.5278 146.812 14.7435C144.576 17.1437 142.658 19.4359 141.061 21.6203C139.463 23.8046 138.399 25.7328 137.867 27.4048C137.733 27.8093 137.667 28.0925 137.667 28.2543C137.667 28.4969 137.733 28.6183 137.867 28.6183C137.972 28.6183 138.106 28.5644 138.266 28.4565C138.426 28.3217 138.613 28.1733 138.825 28.0115C139.251 27.661 139.731 27.2294 140.263 26.7171C140.822 26.2047 141.367 25.6789 141.9 25.1395C142.432 24.6002 142.899 24.1147 143.297 23.6833C143.724 23.2249 144.017 22.9012 144.176 22.7125C144.229 22.6586 144.283 22.6045 144.336 22.5506C144.415 22.4698 144.495 22.4293 144.576 22.4293C144.762 22.4293 144.855 22.5237 144.855 22.7125C144.855 22.8202 144.642 23.1439 144.216 23.6833C143.789 24.1957 143.257 24.8024 142.619 25.5035C141.98 26.1778 141.327 26.8519 140.662 27.5261C139.997 28.1733 139.411 28.7262 138.904 29.1846C138.426 29.616 138.119 29.8319 137.987 29.8319ZM132.235 28.0115C132.342 28.0115 132.463 27.9442 132.595 27.8093C133.954 26.6228 135.244 25.3283 136.469 23.9259C137.721 22.5237 138.891 21.0943 139.983 19.6382C139.85 19.3685 139.664 19.1527 139.424 18.9909C139.211 18.8021 138.958 18.7077 138.665 18.7077C138.133 18.7077 137.547 18.937 136.908 19.3954C136.295 19.8539 135.723 20.3797 135.191 20.973C134.658 21.5393 134.232 22.0113 133.912 22.3888C133.434 22.9821 132.968 23.7507 132.515 24.6946C132.09 25.6115 131.877 26.4609 131.877 27.243C131.877 27.7554 131.996 28.0115 132.235 28.0115Z" fill="#181818" />
-      <path d="M145.24 29.1033C143.643 29.1033 142.845 28.3078 142.845 26.7167C142.845 26.0964 143.004 25.3818 143.324 24.5728C143.67 23.7367 144.122 22.9008 144.681 22.0647C145.24 21.2288 145.866 20.4602 146.559 19.7591C147.25 19.031 147.956 18.4511 148.675 18.0197C149.42 17.5613 150.113 17.332 150.751 17.332C150.965 17.332 151.111 17.3859 151.191 17.4939C151.298 17.5747 151.377 17.723 151.43 17.9388C151.484 18.0466 151.524 18.168 151.551 18.3028C151.577 18.4377 151.616 18.5725 151.67 18.7073C151.777 18.8961 151.87 19.0849 151.949 19.2737C152.029 19.4624 152.07 19.6647 152.07 19.8805C152.07 20.1501 152.003 20.3929 151.87 20.6086C151.737 20.7974 151.577 20.9726 151.39 21.1344C151.124 21.3771 150.724 21.6872 150.192 22.0647C149.66 22.4153 149.074 22.7795 148.435 23.157C147.824 23.5076 147.225 23.8177 146.639 24.0873C146.08 24.3571 145.627 24.5188 145.28 24.5728C145.041 24.9503 144.788 25.4223 144.522 25.9886C144.283 26.528 144.162 27.0268 144.162 27.4852C144.162 27.7279 144.216 27.9438 144.323 28.1325C144.455 28.3213 144.656 28.4157 144.922 28.4157C145.347 28.4157 145.906 28.2134 146.599 27.8089C147.317 27.3774 148.063 26.865 148.835 26.2718C149.606 25.6514 150.312 25.0581 150.952 24.4918C151.616 23.8986 152.11 23.4402 152.429 23.1165L153.706 21.7412C153.867 21.5794 154.039 21.4984 154.225 21.4984C154.386 21.4984 154.466 21.5659 154.466 21.7007C154.466 21.8626 154.24 22.1996 153.787 22.712C153.333 23.1974 152.789 23.7503 152.15 24.3705C151.537 24.9638 150.965 25.5167 150.433 26.029C149.899 26.5144 149.554 26.8245 149.394 26.9594C148.835 27.4447 148.196 27.9302 147.477 28.4157C146.758 28.8741 146.013 29.1033 145.24 29.1033ZM145.96 23.521C146.226 23.3592 146.625 23.103 147.158 22.7525C147.717 22.4019 148.289 22.0108 148.875 21.5794C149.461 21.148 149.953 20.7164 150.352 20.2849C150.778 19.8535 150.992 19.476 150.992 19.1523C150.992 19.0715 150.978 19.004 150.952 18.95C150.925 18.9231 150.871 18.9096 150.791 18.9096C150.446 18.9096 150.033 19.0984 149.554 19.476C149.074 19.8535 148.595 20.3119 148.115 20.8513C147.637 21.3637 147.198 21.876 146.798 22.3884C146.425 22.8739 146.146 23.2514 145.96 23.521Z" fill="#181818" />
-      <path d="M152.78 29.3064C152.353 29.2255 152.047 29.185 151.861 29.185C151.701 29.185 151.475 28.9693 151.182 28.5379C151.155 28.4839 151.128 28.4165 151.103 28.3356C151.103 28.2547 151.103 28.1873 151.103 28.1334C151.103 27.7288 151.222 27.1355 151.461 26.3535C151.728 25.5714 152.034 24.7355 152.38 23.8455C152.753 22.9556 153.113 22.133 153.458 21.378C153.804 20.5959 154.07 19.9891 154.256 19.5577C154.31 19.4499 154.337 19.3689 154.337 19.315C154.337 19.1801 154.256 19.1127 154.097 19.1127C153.965 19.0857 153.898 18.978 153.898 18.7892C154.03 18.5733 154.204 18.3037 154.417 17.9801C154.656 17.6565 154.909 17.3734 155.175 17.1306C155.468 16.8879 155.747 16.7666 156.015 16.7666C156.227 16.7666 156.507 16.9284 156.853 17.2519C157.198 17.5486 157.372 17.8048 157.372 18.0206C157.372 18.0475 157.359 18.0744 157.332 18.1014C157.332 18.1014 157.332 18.1149 157.332 18.1419C156.932 18.5733 156.52 19.1667 156.094 19.9218C155.668 20.6769 155.269 21.4993 154.897 22.3893C154.524 23.2523 154.204 24.1017 153.938 24.9377C153.697 25.7737 153.538 26.4883 153.458 27.0816C154.71 25.8951 156.001 24.6545 157.332 23.3601C158.664 22.0387 159.822 20.6903 160.806 19.315C160.886 18.8295 160.953 18.3846 161.005 17.9801C161.086 17.5486 161.246 17.0497 161.485 16.4834C161.618 16.1867 161.792 15.9441 162.004 15.7553C162.217 15.5396 162.483 15.4316 162.803 15.4316C163.096 15.4316 163.362 15.526 163.601 15.7148C163.867 15.9036 164.001 16.1464 164.001 16.4429C164.001 16.7935 163.867 17.1172 163.601 17.4137C163.335 17.7104 163.069 18.088 162.803 18.5464C162.537 19.0049 162.404 19.6521 162.404 20.4881V20.6498C162.404 20.7577 162.391 20.8926 162.364 21.0544C162.337 21.2161 162.257 21.2971 162.123 21.2971C161.937 21.2971 161.738 21.1892 161.524 20.9735C161.312 20.7577 161.192 20.5554 161.166 20.3667C159.807 21.9039 158.45 23.441 157.092 24.9782C155.735 26.4883 154.296 27.9311 152.78 29.3064Z" fill="#181818" />
+    <svg xmlns="http://www.w3.org/2000/svg" width="164" height="41" fill="none" viewbox="0 0 164 41" style="box-sizing: border-box;">
+      <path fill="#181818" d="M40.032 0H0v40.032h40.032z" style="box-sizing: border-box;"></path>
+      <path fill="#fff" d="M23.348 32.115v-.868h1.686V9.752h-1.686v-.88h2.582v23.243zm-6.95 0v-.868h-1.686V9.752h1.686v-.88h-2.583v23.243z" style="box-sizing: border-box;"></path>
+      <path fill="#181818" d="M49.071 15.648h6.248q1.263 0 1.965.143.726.118 1.38.568.68.474 1.1 1.351.445.877.445 1.825 0 .261-.023.498-.024.237-.187.782-.165.522-.445.948-.281.404-.913.854-.608.45-1.45.71.913 1.28 2.62 4.196h2.2v1.944h-3.604a31 31 0 0 0-2.27-4.124q-.747-1.139-1.099-1.446-.351-.333-.912-.332h-1.194v3.958h2.036v1.944H49.07v-1.944h1.825v-9.931H49.07zm6.248 1.944h-2.387v4.03h1.732q1.848 0 2.597-.498.795-.546.795-1.66 0-1.089-.678-1.47-.655-.402-2.06-.402m9.933 10.168q-1.731-2.109-1.732-5.19t1.732-5.19q1.755-2.134 4.54-2.134 2.807 0 4.539 2.11t1.731 5.19-1.755 5.19q-1.731 2.11-4.516 2.11t-4.539-2.085m.421-5.214q0 2.18 1.123 3.721 1.125 1.54 2.995 1.541 1.873 0 2.995-1.517 1.124-1.54 1.124-3.745 0-2.133-1.124-3.697-1.1-1.565-2.995-1.565-1.872 0-2.995 1.565-1.123 1.541-1.123 3.697m18.707 3.981 3.322-8.936h-2.105v-1.944h5.732v1.944h-1.544l-4.422 11.875h-2.013l-4.375-11.875h-1.685v-1.944h5.756v1.944h-1.919zm9.223-10.88h4.469l5.475 10.263h.398v-8.319h-2.34v-1.944h5.779v1.944h-1.567v12.159h-2.504L97.72 19.322h-.421v8.201h2.363v1.944h-6.06v-1.944h1.825v-9.931h-1.825zm16.881 12.112q-1.731-2.109-1.731-5.19t1.731-5.19q1.755-2.134 4.54-2.134 2.808 0 4.539 2.11 1.732 2.109 1.732 5.19t-1.755 5.19q-1.731 2.11-4.516 2.11t-4.54-2.085m.422-5.214q0 2.18 1.123 3.721t2.995 1.541 2.995-1.517q1.123-1.54 1.123-3.745 0-2.133-1.123-3.697-1.1-1.565-2.995-1.565-1.872 0-2.995 1.565-1.123 1.541-1.123 3.697m14.919 7.058q-.63 0-1.081-.457a1.5 1.5 0 0 1-.451-1.095q0-.638.451-1.094a1.47 1.47 0 0 1 1.081-.457q.628 0 1.08.457.45.457.451 1.094 0 .423-.212.776a1.6 1.6 0 0 1-.554.569 1.44 1.44 0 0 1-.765.207m12.163.227q-.36 0-.84-.324a4 4 0 0 1-.798-.687q-.36-.446-.36-.81 0-.485.32-1.253.32-.77.799-1.618.48-.89.918-1.619.48-.727.719-1.132-.32.405-.999 1.254-.678.81-1.516 1.82a38 38 0 0 1-1.678 1.901 19 19 0 0 1-1.557 1.497q-.72.566-1.158.566-.28 0-.959-.526-.638-.566-.639-1.698 0-.93.559-2.266.6-1.335 1.558-2.75.958-1.457 2.076-2.71 1.157-1.255 2.276-2.023 1.159-.77 2.077-.769.72 0 1.398.486.679.445.798 1.658a85 85 0 0 1 1.757-2.265 82 82 0 0 1 2.556-2.953q.2-.243.759-.85.559-.647 1.277-1.375.72-.768 1.399-1.375.72-.647 1.197-.81.2-.08.8.244.598.283.599.727a.62.62 0 0 1-.201.445 12 12 0 0 1-.838.85q-.559.566-1.279 1.214-.718.647-1.357 1.213-.598.525-.838.85-3.355 3.6-5.751 6.876t-3.194 5.785q-.2.606-.2.85 0 .363.2.363.158 0 .399-.162.24-.202.559-.444.64-.527 1.438-1.295a46 46 0 0 0 1.637-1.577 62 62 0 0 0 2.276-2.428l.16-.161q.118-.122.24-.122.279 0 .279.284 0 .16-.639.97-.64.77-1.597 1.82-.959 1.012-1.957 2.023a67 67 0 0 1-1.758 1.659q-.718.647-.917.647m-5.752-1.82q.161 0 .36-.203a41 41 0 0 0 3.874-3.883 65 65 0 0 0 3.514-4.288 1.64 1.64 0 0 0-.559-.647 1.1 1.1 0 0 0-.759-.283q-.798 0-1.757.687a12 12 0 0 0-1.717 1.578 38 38 0 0 0-1.279 1.416q-.717.89-1.397 2.306-.638 1.374-.638 2.548 0 .768.358.769" style="box-sizing: border-box;"></path>
+      <path fill="#181818" d="M145.24 29.103q-2.395 0-2.395-2.386 0-.93.479-2.144.519-1.254 1.357-2.508a15.6 15.6 0 0 1 1.878-2.306q1.037-1.092 2.116-1.74 1.118-.687 2.076-.687.32 0 .44.162.16.12.239.445.08.162.121.364.038.203.119.404.16.284.279.567.12.282.121.607 0 .404-.2.728a3 3 0 0 1-.48.525q-.4.364-1.198.93-.798.526-1.757 1.093-.917.525-1.796.93-.839.405-1.359.486-.359.566-.758 1.416-.36.809-.36 1.496 0 .364.161.648.199.282.599.283.638 0 1.677-.607a24 24 0 0 0 2.236-1.537 59 59 0 0 0 2.117-1.78 35 35 0 0 0 1.477-1.376l1.277-1.375q.24-.243.519-.243.241 0 .241.203 0 .243-.679 1.011a49 49 0 0 1-1.637 1.659q-.92.89-1.717 1.658-.8.728-1.039.93a20 20 0 0 1-1.917 1.457q-1.078.687-2.237.687m.72-5.582q.399-.243 1.198-.768a28 28 0 0 0 1.717-1.174 10.4 10.4 0 0 0 1.477-1.294q.64-.647.64-1.133a.5.5 0 0 0-.04-.202q-.04-.04-.161-.04-.518 0-1.237.566-.72.567-1.439 1.375a23 23 0 0 0-1.317 1.537q-.56.728-.838 1.133" style="box-sizing: border-box;"></path>
+      <path fill="#181818" d="M152.78 29.306q-.64-.12-.919-.121-.24 0-.679-.647a1.3 1.3 0 0 1-.079-.202v-.203q0-.606.358-1.78.4-1.173.919-2.508.56-1.335 1.078-2.467.519-1.173.798-1.82a.6.6 0 0 0 .081-.243q0-.202-.24-.202-.199-.04-.199-.324.199-.324.519-.809.359-.485.758-.85.439-.363.84-.363.319 0 .838.485.518.445.519.769 0 .04-.04.08v.04q-.6.648-1.238 1.78a23 23 0 0 0-1.197 2.468 27 27 0 0 0-.959 2.549q-.36 1.254-.48 2.144a417 417 0 0 0 3.874-3.722 32 32 0 0 0 3.474-4.045q.12-.728.199-1.335.121-.646.48-1.497a2.1 2.1 0 0 1 .519-.728q.32-.323.799-.323.44 0 .798.283.4.283.4.728 0 .526-.4.97a7 7 0 0 0-.798 1.133q-.399.688-.399 1.942v.162q0 .162-.04.404t-.241.243q-.279 0-.599-.323-.318-.325-.358-.607l-4.074 4.611a60 60 0 0 1-4.312 4.328" style="box-sizing: border-box;"></path>
     </svg>
 
-    <h1 style="font-size: 32px; font-weight: 700; letter-spacing: -0.02em; color: #111; margin-top: 0; margin-bottom: 8px;">
-      Демонстрация нового дизайна для <strong>${SITE_NAME}</strong>
+    <h1 style="font-size: 32px;font-weight: 700;letter-spacing: -0.02em;color: #111;margin-top: 0;margin-bottom: 8px;box-sizing: border-box;">
+      Демонстрация нового дизайна для <strong style="box-sizing: border-box;"><a href="https://${SITE_NAME}" style="box-sizing: border-box;color: inherit;text-decoration: none;">${SITE_NAME}</a></strong>
     </h1>
-    <p style="font-size: 18px; color: #555; margin-bottom: 24px;">
-      Мы подготовили предварительный макет обновлённого сайта. Ниже — полная страница и каждый ключевой блок отдельно.
+    <p style="font-size: 18px;color: #555;margin-bottom: 24px;box-sizing: border-box;">
+      Мы подготовили предварительный макет обновлённого сайта. Ниже - страница целиком и каждый ключевой блок отдельно.
     </p>
 
     <!-- AI Platform Description -->
-    <div style="background: #f0f4ff; padding: 16px 20px; border-radius: 12px; margin-bottom: 24px; border: 1px solid #dbe4ff;">
-      <p style="margin: 0; font-size: 14px; color: #1a2a5e;">
-        <strong>Это демонстрация улучшенного дизайна вашего сайта по шаблону с помощью ИИ от Rovno.dev.</strong> Она позволяет создавать адаптивные, эстетичные и конверсионные страницы в разы быстрее, чем классическая разработка.
+    <div style="background: #f0f4ff;padding: 16px 20px;border-radius: 12px;margin-bottom: 24px;border: 1px solid #dbe4ff;box-sizing: border-box;">
+      <p style="margin: 0;font-size: 14px;color: #1a2a5e;box-sizing: border-box;">
+        <strong style="box-sizing: border-box;">Это демонстрация улучшенного дизайна вашего сайта по шаблону с помощью ИИ от Rovno.dev.</strong> Она позволяет создавать адаптивные, эстетичные и конверсионные страницы в разы быстрее, чем классическая разработка.
       </p>
     </div>
 
     <!-- Hero Screenshot (full page) -->
-    <img src="data:image/png;base64,{{FULL_SCREENSHOT}}" alt="Полная страница" style="width: 100%; height: auto; border-radius: 16px; border: 1px solid #e2e8f0; margin-bottom: 24px;">
+    <img src="data:image/png;base64,{{FULL_SCREENSHOT}}" alt="Полная страница" style="width: 100%;height: auto;border-radius: 16px;border: 1px solid #e2e8f0;margin-bottom: 24px;box-sizing: border-box;">
 
     <!-- Section Gallery (two columns) -->
-    <h2 style="font-size: 22px; font-weight: 600; margin-bottom: 16px;">Ключевые блоки</h2>
-    <div class="section-gallery">
+    <h2 style="font-size: 22px;font-weight: 600;margin-bottom: 16px;box-sizing: border-box;">Ключевые блоки</h2>
+    <div class="section-gallery" style="box-sizing: border-box;display: flex;flex-direction: column;gap: 1rem;margin: 20px 0;">
       {{SECTION_GALLERY}}
     </div>
 
-    <!-- Benefits with Big Numbers -->
-    <h2 style="font-size: 22px; font-weight: 600; margin-bottom: 16px;">Какие результаты могут получиться?</h2>
-    <div style="margin: 32px 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px;">
-      <div style="background: #f8fafc; padding: 24px; border-radius: 16px; border-left: 5px solid #336DFF; box-shadow: 0 2px 8px rgba(0,0,0,0.02);">
-        <div style="font-size: 44px; font-weight: 800; color: #336DFF; line-height: 1; margin-bottom: 8px;">1.4x</div>
-        <div style="font-size: 16px; font-weight: 600; color: #111; margin-bottom: 4px;">Скорость загрузки</div>
-        <div style="font-size: 14px; color: #666; line-height: 1.5;">Оптимизация кода и изображений, LCP &lt; 2.5 с.</div>
+    <!-- Benefits with Big Numbers. Update for current site! -->
+    <h2 style="font-size: 22px;font-weight: 600;margin-bottom: 16px;box-sizing: border-box;">Какие результаты могут получиться?</h2>
+    <div style="margin: 32px 0;display: grid;grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));gap: 1.1rem;box-sizing: border-box;">
+      <div style="background: #f8fafc;padding: 24px;border-radius: 16px;border-left: 5px solid #336DFF;box-shadow: 0 2px 8px rgba(0,0,0,0.02);box-sizing: border-box;">
+        <div style="font-size: 44px;font-weight: 800;color: #336DFF;line-height: 1;margin-bottom: 8px;box-sizing: border-box;">1.4x</div>
+        <div style="font-size: 16px;font-weight: 600;color: #111;margin-bottom: 4px;box-sizing: border-box;">Скорость загрузки</div>
+        <div style="font-size: 14px;color: #666;line-height: 1.5;box-sizing: border-box;">Оптимизация кода и изображений, LCP &lt; 2.5 с.</div>
       </div>
-      <div style="background: #f8fafc; padding: 24px; border-radius: 16px; border-left: 5px solid #336DFF; box-shadow: 0 2px 8px rgba(0,0,0,0.02);">
-        <div style="font-size: 44px; font-weight: 800; color: #336DFF; line-height: 1; margin-bottom: 8px;">100%</div>
-        <div style="font-size: 16px; font-weight: 600; color: #111; margin-bottom: 4px;">Мобильная адаптация</div>
-        <div style="font-size: 14px; color: #666; line-height: 1.5;">Безупречное отображение на всех экранах (375–1440px).</div>
+      <div style="background: #f8fafc;padding: 24px;border-radius: 16px;border-left: 5px solid #336DFF;box-shadow: 0 2px 8px rgba(0,0,0,0.02);box-sizing: border-box;">
+        <div style="font-size: 44px;font-weight: 800;color: #336DFF;line-height: 1;margin-bottom: 8px;box-sizing: border-box;">100%</div>
+        <div style="font-size: 16px;font-weight: 600;color: #111;margin-bottom: 4px;box-sizing: border-box;">Мобильная адаптация</div>
+        <div style="font-size: 14px;color: #666;line-height: 1.5;box-sizing: border-box;">Безупречное отображение на всех экранах (375–1440px).</div>
       </div>
-      <div style="background: #f8fafc; padding: 24px; border-radius: 16px; border-left: 5px solid #336DFF; box-shadow: 0 2px 8px rgba(0,0,0,0.02);">
-        <div style="font-size: 44px; font-weight: 800; color: #336DFF; line-height: 1; margin-bottom: 8px;">+25%</div>
-        <div style="font-size: 16px; font-weight: 600; color: #111; margin-bottom: 4px;">Рост конверсии</div>
-        <div style="font-size: 14px; color: #666; line-height: 1.5;">Чёткие CTA и усиленное доверие к бренду.</div>
+      <div style="background: #f8fafc;padding: 24px;border-radius: 16px;border-left: 5px solid #336DFF;box-shadow: 0 2px 8px rgba(0,0,0,0.02);box-sizing: border-box;">
+        <div style="font-size: 44px;font-weight: 800;color: #336DFF;line-height: 1;margin-bottom: 8px;box-sizing: border-box;">+25%</div>
+        <div style="font-size: 16px;font-weight: 600;color: #111;margin-bottom: 4px;box-sizing: border-box;">Рост конверсии</div>
+        <div style="font-size: 14px;color: #666;line-height: 1.5;box-sizing: border-box;">Чёткие CTA и усиленное доверие к бренду.</div>
       </div>
     </div>
 
     <!-- CTAs -->
-    <div style="display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; margin-top: 32px;">
-      <a href="https://t.me/niyaz_gimadiev" class="cta-btn" style="flex: 1 1 200px; max-width: 340px; text-align: center; padding: 18px 28px; background: #336DFF; color: #fff; text-decoration: none; border-radius: 14px; font-weight: 600; font-size: 16px; box-shadow: 0 4px 14px rgba(51, 109, 255, 0.3); transition: all 0.2s;">
-        ✉️ Написать в CTO Telegram
+    <div style="display: flex;flex-wrap: wrap;gap: 16px;justify-content: center;margin-top: 32px;box-sizing: border-box;">
+      <a href="https://t.me/niyaz_gimadiev" class="cta-btn" style="flex: 1 1 200px;max-width: 340px;text-align: center;padding: 18px 28px;background: #336DFF;color: #fff;text-decoration: none;border-radius: 14px;font-weight: 600;font-size: 16px;box-shadow: 0 4px 14px rgba(51, 109, 255, 0.3);transition: all 0.2s;box-sizing: border-box;">
+        Написать в CTO Telegram
       </a>
-      <a href="https://forms.yandex.com/cloud/6936a4b1d0468820623c548e" class="cta-btn" style="flex: 1 1 200px; max-width: 340px; text-align: center; padding: 18px 28px; background: #111; color: #fff; text-decoration: none; border-radius: 14px; font-weight: 600; font-size: 16px; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15); transition: all 0.2s;">
-        📋 Заполнить форму заказа
+      <a href="https://forms.yandex.com/cloud/6936a4b1d0468820623c548e" class="cta-btn" style="flex: 1 1 200px;max-width: 340px;text-align: center;padding: 18px 28px;background: #111;color: #fff;text-decoration: none;border-radius: 14px;font-weight: 600;font-size: 16px;box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);transition: all 0.2s;box-sizing: border-box;">
+        Заполнить форму заказа
       </a>
     </div>
 
-    <div style="margin-top: 40px; padding-top: 24px; border-top: 1px solid #e2e8f0; text-align: center; font-size: 14px; color: #777;">
-      С уважением, команда Rovno.dev<br>
-      <a href="https://rovno.dev/projects" style="color: #336DFF; font-weight: 500; text-decoration: none;">Наши работы</a> &middot; <a href="https://t.me/rovno_dev" style="color: #336DFF; font-weight: 500; text-decoration: none;">Наш Телеграм</a>
+    <div style="margin-top: 40px;padding-top: 24px;border-top: 1px solid #e2e8f0;text-align: center;font-size: 14px;color: #777;box-sizing: border-box;">
+      С уважением, команда Rovno.dev<br style="box-sizing: border-box;">
+      <a href="https://rovno.dev/projects" style="color: #336DFF;font-weight: 500;text-decoration: none;box-sizing: border-box;">Наши работы</a> &middot; <a href="https://t.me/rovno_dev" style="color: #336DFF;font-weight: 500;text-decoration: none;box-sizing: border-box;">Наш Телеграм</a>
     </div>
 
   </div>
@@ -739,11 +705,7 @@ Heading rule: Never exceed 2 lines on desktop. Use weight and colour for hierarc
 
 1. HTML5 structure with semantic elements (`<header>`, `<main>`, `<section>`, `<footer>`).  
 2. CSS embedded in `<style>` – use CSS variables for theming and easy dark mode toggle.  
-3. JavaScript for:  
-   * Theme toggle (light/dark/system).  
-   * Scroll‑reveal animations (IntersectionObserver).  
-   * Mobile menu toggle.  
-   * (Optional) smooth scroll, hover effects.  
+3. Don't use JavaScript.
 4. Images: Use high‑quality placeholder services like `picsum.photos` with descriptive seeds, or generate via AI. Ensure they are responsive (`srcset` or `width: 100%; height: auto;`).  
 5. Icons: Use SVG inline or a lightweight icon library (Phosphor, Radix) – no emojis.  
 6. Performance: LCP \< 2.5s – preload hero image; minimal JS; `will-change: transform` only on animated elements.
@@ -7635,7 +7597,7 @@ no generic placeholder names, no broken image links.)
 ````markdown
 # Global Rules: Lazy & Rigorous Engineer
 
-You are a **lazy senior engineer**, **Linus Torwalds**, **CTO**, **Full-stack with 12y experience** and **designer that does cooler than an Apple** (apple.com, nextjs.org, instagram.com, vercel.com, mui.com, sber.ru, ozon.ru, chatgpt.com), **knows an every stack on planet Earth**, does not write comments (only comments for AI) and don't make an errors – lazy means efficient, not careless. Combine surgical precision with ruthless pragmatism.
+You are a **Linus Torwalds**, **CTO**, **Full-stack with 12y experience** and **designer that does cooler than an Apple** (apple.com, nextjs.org, instagram.com, vercel.com, mui.com, sber.ru, ozon.ru, chatgpt.com), **knows an every stack on planet Earth**, does not write comments (only comments for AI) and don't make an errors – lazy means efficient, not careless. Combine surgical precision with ruthless pragmatism.
 
 ## Important
 You're accords the context of the file (like repomix-output) and makes like there. You're making comments for other LLM on english. Please, do not cut the commented code if you're not sure you need to do it. Write comments in code only on english. Do not change code capitally if I don't said to you to do it. 
@@ -7655,39 +7617,6 @@ EOF
 Write all paths in bash commands inside commas please. If there're no files with that name you need to create it first to prevent errors (including dir).
 
 Does not do anything with docker compose. I made it by myself.
-
-# Ponytail, lazy senior dev mode
-
-You are a lazy senior developer. Lazy means efficient, not careless. The best code is the code never written.
-
-Before writing any code, stop at the first rung that holds:
-
-1. Does this need to be built at all? (YAGNI)
-2. Does it already exist in this codebase? Reuse the helper, util, or pattern that's already here, don't re-write it.
-3. Does the standard library already do this? Use it.
-4. Does a native platform feature cover it? Use it.
-5. Does an already-installed dependency solve it? Use it.
-6. Can this be one line? Make it one line.
-7. Only then: write the minimum code that works.
-
-The ladder runs after you understand the problem, not instead of it: read the task and the code it touches, trace the real flow end to end, then climb.
-
-Bug fix = root cause, not symptom: a report names a symptom. Grep every caller of the function you touch and fix the shared function once — one guard there is a smaller diff than one per caller, and patching only the path the ticket names leaves a sibling caller still broken.
-
-Rules:
-
-- No abstractions that weren't explicitly requested.
-- No new dependency if it can be avoided.
-- No boilerplate nobody asked for.
-- Deletion over addition. Boring over clever. Fewest files possible.
-- Shortest working diff wins, but only once you understand the problem. The smallest change in the wrong place isn't lazy, it's a second bug.
-- Question complex requests: "Do you actually need X, or does Y cover it?"
-- Pick the edge-case-correct option when two stdlib approaches are the same size, lazy means less code, not the flimsier algorithm.
-- Mark intentional simplifications with a `ponytail:` comment. If the shortcut has a known ceiling (global lock, O(n²) scan, naive heuristic), the comment names the ceiling and the upgrade path.
-
-Not lazy about: understanding the problem (read it fully and trace the real flow before picking a rung, a small diff you don't understand is just laziness dressed up as efficiency), input validation at trust boundaries, error handling that prevents data loss, security, accessibility, the calibration real hardware needs (the platform is never the spec ideal, a clock drifts, a sensor reads off), anything explicitly requested. Lazy code without its check is unfinished: non-trivial logic leaves ONE runnable check behind, the smallest thing that fails if the logic breaks (an assert-based demo/self-check or one small test file; no frameworks, no fixtures). Trivial one-liners need no test.
-
-(Yes, this file also applies to agents working on the ponytail repo itself. Especially to them.)
 
 # andrej-karpathy-skills
 
