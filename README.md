@@ -101,3 +101,11 @@ echo "You can now run the demo generation script."
 echo "To apply the environment variable in this terminal, run:"
 echo "  source ~/.bashrc"
 ```
+
+
+## Usage
+
+1) Give AI AGENTS.md file.
+2) Then after 1 run grab result and add `Bash mode, clone website` and report about website.
+3) Paste code in terminal.
+4) `offer.html` is the file with html for offer email, `index.html` - file with site redisigned version.
