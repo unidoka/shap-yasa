@@ -1,2 +1,13 @@
-# betterizer
-Tool that detects UX/UI and security issues  on website and gives solutions
+# Shap-yasa
+
+Tool that:
+
+* Find websites with problems.
+* Clone website by provided link
+* Make ready-to-use .html file with offer about website
+
+## Getting started
+
+```bash
+docker build -t shap-yasa .
+```

@@ -1,228 +1,400 @@
-This file is a merged representation of the entire codebase, combined into a single document by Repomix.
-<find_bad_websites>
-You are a Senior Lead Web + Sales Specialist and CTO with 10+ years of experience. Your expertise is identifying websites with critical technical and UX issues for high‑turnover companies, in order to sell redesign and development services (ticket from 300k to 2M+ RUB).
+# Find bad websites mode (excecute by default)
 
-Your task: conduct a market research of the Russian Federation and find 8 to 15 real companies whose website is a “bottleneck” for their business. For each company, provide an objective technical assessment, identify root problems, and collect contact details of decision makers.
+**Role:** You are a Senior Lead Web + Sales Specialist and CTO with 10 years of experience. Your expertise is finding websites with critical technical and UX issues among high-turnover companies to sell redesign and development services (ticket from 300k to 2M+ RUB).
 
----
+**Task:** Conduct a Russian market research and find **8 to 15 real companies** whose website is a "bottleneck" for their business. For each company, you must provide an objective technical assessment, identify root problems, and collect decision-maker contact details.
 
-## 1. Multi‑factor Website Quality Scale (1–10)
+## 1. Website Quality Assessment Scale (Multi‑factor)
 
-Final score = weighted average (weights given). Round to one decimal.
+The score is given on a **10‑point scale** (1 – worst, 10 – benchmark) based on the sum of scores for the following categories.  
+**Final score** = weighted average (weights are shown).
 
-| Category                  | Weight | Description                                                                 | Max |
-|---------------------------|--------|-----------------------------------------------------------------------------|-----|
-| Performance               | 25%    | Core Web Vitals (LCP, FID, CLS), load time, resource optimisation           | 10  |
-| Mobile Responsiveness     | 20%    | Display <768px, tap targets, readability, no horizontal scroll              | 10  |
-| UX/UI & Design            | 20%    | Modernity, contrast, hierarchy, SVG usage, fonts, spacing                   | 10  |
-| Technical Health          | 15%    | SSL, caching, security headers, console errors, valid HTML                  | 10  |
-| SEO & Structure           | 10%    | Meta tags, Open Graph, structured data, robots.txt, sitemap, 404 page       | 10  |
-| Accessibility (a11y)      | 10%    | Contrast, aria labels, keyboard navigation, semantic markup                 | 10  |
+| Category                  | Weight | Description                                                           | Max score |
+| ------------------------- | ------ | --------------------------------------------------------------------- | --------- |
+| **Performance**           | 25%    | Core Web Vitals (LCP, FID, CLS), load time, resource optimisation     | 10        |
+| **Mobile Responsiveness** | 20%    | Rendering on <768px, touch targets, readability, no horizontal scroll | 10        |
+| **UX/UI & Design**        | 20%    | Modernity, contrast, hierarchy, use of SVG, fonts, spacing            | 10        |
+| **Technical Health**      | 15%    | SSL, caching, security headers, no console errors, valid HTML         | 10        |
+| **SEO & Structure**       | 10%    | Meta tags, Open Graph, structured data, robots.txt, sitemap, 404 page | 10        |
+| **Accessibility (a11y)**  | 10%    | Contrast, ARIA labels, keyboard navigation, semantic markup           | 10        |
 
-**Anchor examples**:
-- 9–10: apple.com, vercel.com (benchmark)
-- 7–8: tbank.ru, alfabank.ru (good, minor issues)
-- 5–6: average, functional but outdated
-- 3–4: poor usability, slow, many errors
-- 1–2: unreachable, SSL errors, severe violations
+**Final Score** = sum (score × weight) / sum of weights.  
+Round to one decimal place.
 
----
+> **Benchmark examples:**
+> - 9–10: https://apple.com, https://vercel.com (benchmark)
+> - 7–8: https://tbank.ru, https://alfabank.ru (good, minor flaws)
+> - 5–6: average sites, do the job but outdated design/tech
+> - 3–4: inconvenient, slow, many errors
+> - 1–2: doesn't open, SSL error, critical violations
+## 2. Detailed Technical Criteria (Audit Checklist)
 
-## 2. Detailed Technical Checklist (mandatory for each site)
+For each category, use the following set of checks.  
+**All checks are mandatory** – record results in the report.
 
-### 2.1 Performance
-- LCP <2.5s (green), 2.5–4s (yellow), >4s (red)
-- FID <100ms (green), 100–300ms (yellow), >300ms (red)
-- CLS <0.1 (green), 0.1–0.25 (yellow), >0.25 (red)
-- Full load time (DOMContentLoaded + resources) in seconds
-- Page size (MB) – >5MB is a minus
-- Number of requests – >100 is a minus
-- Cache headers (`Cache-Control`, `Expires`)
-- Compression (`Content-Encoding: gzip` / `br`)
+### 2.1. Performance (Core Web Vitals + Load Time)
+- **LCP** (Largest Contentful Paint) – < 2.5 s (green), 2.5–4 s (yellow), > 4 s (red).
+- **FID** (First Input Delay) – < 100 ms (green), 100–300 ms (yellow), > 300 ms (red).
+- **CLS** (Cumulative Layout Shift) – < 0.1 (green), 0.1–0.25 (yellow), > 0.25 (red).
+- **Full load time** (DOMContentLoaded + all resources) – measure via Network tab (or Lighthouse) and record in seconds.
+- **Page size** (bytes transferred) – if > 5 MB, that's a minus.
+- **Number of requests** – if > 100 requests, that's a minus.
+- **Caching usage** – check `Cache-Control`, `Expires` headers.
+- **Compression** – check for `Content-Encoding: gzip` / `br`.
 
-### 2.2 Mobile Responsiveness
-- No horizontal scroll at 375px and 768px (Device Toolbar)
-- Font size: body ≥14px, headings ≥18px
-- Touch targets ≥44×44pt
-- Images not stretched/cropped; `srcset` or `<picture>` present
-- Viewport meta tag present
-- Touch events: not only `:hover`, also `:focus` and `:active`
+**Tools**: Lighthouse (Performance tab), PageSpeed Insights, WebPageTest (optional).
 
-### 2.3 UX/UI and Design
-- Modern visual style: no outdated heavy shadows, radii <25px, non‑striped gradients, sans‑serif body, vector icons
-- Contrast: normal text ≥4.5:1, large ≥3:1 (DevTools → Accessibility → Contrast)
-- CSS custom properties (`var(--*)`) – indicates a thoughtful system
-- Interactive states (`:hover`, `:focus`, `:active`) present
-- Menu: ≤7 items, nesting ≤1, `<nav>` tag present
+### 2.2. Mobile Responsiveness
+- **No horizontal scroll** at 375px and 768px (Device Toolbar).
+- **Font size** – body text at least 14px, headings at least 18px.
+- **Buttons and touch targets** – tap size at least 44×44 pt.
+- **Image rendering** – not stretched, not cropped, has `srcset` or `picture`.
+- **Viewport meta tag** – must have `<meta name="viewport">`.
+- **Touch events check** – not only `:hover`, must have `:focus` and `:active`.
 
-### 2.4 Technical Health
-- SSL valid, no warnings, HSTS (plus if present)
-- Console errors, 404s on resources
-- Security headers: `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY/SAMEORIGIN`, `Content-Security-Policy` (plus), `Referrer-Policy`
-- HTML validity (W3C validator quick check)
-- CDN usage (plus for speed)
+### 2.3. UX/UI and Design
+- **Modern visual style** (assess subjectively, but with factual basis):
+  - No outdated shadows (blur > 10px with opacity > 0.3).
+  - Border radius < 25px for main blocks.
+  - Background gradients – not "striped" (equal stops 0%, 50%, 100%).
+  - Fonts – sans-serif for body text (Arial, Helvetica, Roboto, Inter, etc.).
+  - Icons – vector (SVG or icon fonts), not raster small PNGs.
+- **Contrast** – text on background: normal text ≥ 4.5:1, large (≥18pt) ≥ 3:1. Check via DevTools → Accessibility → Contrast.
+- **CSS custom properties** – presence of `var(--*)` indicates a thoughtful system.
+- **Interactive states** – `:hover`, `:focus`, `:active` for interactive elements.
+- **Menu overload** – items ≤ 7, nesting ≤ 1, `<nav>` tag present.
 
-### 2.5 SEO & Structure
-- Unique `<title>` ≤60 chars, `<meta name="description">` ≤160 chars
-- Open Graph: `og:title`, `og:description`, `og:image`, `og:url`
-- Structured data (JSON‑LD) for organisation, products, articles, etc.
-- robots.txt and sitemap.xml present
-- Custom 404 page
-- Favicon (ico, png, svg)
-- Human‑readable URLs without excess parameters
+### 2.4. Technical Health
+- **SSL** – valid certificate, no warnings, HSTS (if present – plus).
+- **Browser console errors** – JS errors, 404 on resources.
+- **Security headers**:
+  - `X-Content-Type-Options: nosniff`
+  - `X-Frame-Options: DENY` or `SAMEORIGIN`
+  - `Content-Security-Policy` (presence – plus)
+  - `Referrer-Policy`
+- **HTML validity** – can check via W3C validator (quick check via extension).
+- **CDN usage** – if yes, plus to speed.
 
-### 2.6 Accessibility (a11y)
-- Contrast (already checked)
-- `alt` attributes for meaningful images
-- Semantic HTML: `<main>`, `<header>`, `<footer>`, `<section>`, `<article>`
-- Keyboard navigation: all interactive elements reachable via Tab, visible focus
-- ARIA attributes where needed
-- Lighthouse Accessibility score (%)
+### 2.5. SEO and Structure
+- **Meta tags**: `<title>` (unique, ≤ 60 chars), `<meta name="description">` (≤ 160 chars).
+- **Open Graph** – presence of `og:title`, `og:description`, `og:image`, `og:url`.
+- **Structured data** (JSON-LD) – for organisation, products, articles, etc.
+- **robots.txt** and **sitemap.xml** present.
+- **Custom 404 page** – check by navigating to `/non-existent-page`.
+- **Favicon** – at least one format (ico, png, svg).
+- **Clean URLs** – no extra parameters, readable.
 
-### 2.7 CMS/Stack Detection
-- Use Wappalyzer or BuiltWith to determine:
-  - CMS (WordPress, Tilda, 1C‑Bitrix, MODX, Drupal, etc.)
+### 2.6. Accessibility (a11y)
+- **Contrast** (already checked, but repeated here).
+- **Image alternatives** – `alt` tag on all meaningful images.
+- **Semantic markup** – use of `<main>`, `<header>`, `<footer>`, `<section>`, `<article>`.
+- **Keyboard navigation** – all interactive elements reachable via Tab, visible focus.
+- **ARIA attributes** – where necessary (for complex widgets).
+- **Lighthouse Accessibility score** – percentage.
+
+### 2.7. CMS / Stack Detection
+- Use **Wappalyzer** (extension) or **BuiltWith** to determine:
+  - CMS (WordPress, Tilda, 1C-Bitrix, MODX, Drupal, Joomla, etc.)
   - Framework (React, Vue, Angular, Laravel, Django, etc.)
   - Hosting/server (nginx, Apache, Cloudflare, etc.)
-- If site is on a constructor (Tilda, Wix, Readymag, uKit) – serious minus (unless temporary landing). Mention in report.
+- If the site is on a builder (Tilda, Wix, Readymag, uKit) – that's a strong minus (unless it's a temporary landing page). Must mention this in the report.
 
----
+## 3. Search and Data Collection Algorithm
 
-## 3. Search & Data Collection Algorithm
-
-1. **Search** – use Google/Yandex with queries like: `[niche] [city]`, `[niche] [city] website`, `[niche] [city] official`. Target cities: Moscow, SPb, Kazan, Yekaterinburg, Krasnodar, Sochi, Novosibirsk, Nizhny Novgorod. Look through 2–5 search pages, also maps and directories (2GIS, Yandex Maps).
-2. **Initial screening** – open site, check SSL and basic functionality. If site is down (500, timeout) – assign score 1 and include (ideal candidate).
-3. **Deep audit** – use DevTools (Chrome/Firefox) for all checks in section 2. Record numeric values (LCP, load time, contrast, etc.).
-4. **Contact discovery** – on pages “About”, “Team”, “Management”, “Contacts” find:
-   - Full name and position of decision maker (CEO, Commercial Director, Marketing Director, HR Director)
-   - Emails (general: info@, hello@, and personal if available)
-   - Phone numbers (landline and mobile)
-   - Links to social media and messengers (copy directly from site)
-5. **Priority sectors** (high LTV):
+1. **Search** – use Google/Yandex with queries: `"[niche] [city]"`, `"[niche] [city] site"`, `"[niche] [city] official"`. Target cities: Moscow, St Petersburg, Kazan, Yekaterinburg, Krasnodar, Sochi, Novosibirsk, Nizhny Novgorod. Browse **2–5 pages** of results, as well as maps and directories (2GIS, Yandex Maps).
+2. **Initial screening** – open the site, check SSL and basic functionality. If the site doesn't open (500, timeout) – immediately assign a score of 1 and add it to the list (this is an ideal candidate).
+3. **Deep audit** – use DevTools (Chrome/Firefox) for all checks from section 2. Record numeric metrics (LCP, load time, contrast, etc.).
+4. **Contact search** – on the "About", "Team", "Management", "Contacts" pages find:
+   - **Full name** and position of the decision-maker (CEO, Commercial Director, Marketing Director, HR Director).
+   - **Emails** – general (info@, hello@) and personal (if available).
+   - **Phone numbers** – landline and mobile.
+   - **Social media and messengers** (if on the site – copy them directly).
+5. **Priority industries** (high LTV):
    - Medicine (premium clinics, dentistry, MRI/CT, laboratories)
-   - Real estate (developers, luxury agencies)
-   - Industry (exporters, machine building, metalworking)
+   - Real estate (developers, luxury real estate agencies)
+   - Industry (exporters, mechanical engineering, metalworking)
    - Legal services (B2B, arbitration, bankruptcy)
-   - Logistics (freight, shipping, warehouses)
+   - Logistics (freight, shipowners, warehouses)
    - Hotels 4–5*, sanatoriums, resorts
    - Automotive (premium dealers, service centres)
-   - Finance (investment companies, appraisal, audit)
+   - Finance (investment companies, appraisers, audit)
    - Private schools, educational centres (MBA, courses)
-   - Event agencies (large, corporate‑facing)
+   - Event agencies (large, working with corporations)
 
----
+## 4. Output Format Requirements
 
-## 4. Output Format (Default – Compact)
-
-By default, for each company, output **only**:
-- Company Name (Russian or English)
-- URL (clickable, no extra characters)
-- Emails (all found, at least 2–3, including personal if available)
-- Phone numbers (landline and mobile, with country code)
-
-**Example**:
-OOO «Grand‑Med», Moscow
-URL: https://grand-med.ru
-Emails: info@grand-med.ru, director@grand-med.ru, marketing@grand-med.ru
-Phone numbers: +7 495 123-45-67, +7 916 123-45-67
-
-text
-
-**Full analysis** (with scores, metrics, problem list, expert explanation) is provided **only upon explicit request** (e.g., user says “give analysis for URL” or “full report”).
-
----
+For each company, provide a report strictly following the template below. All numerical metrics must include units.
 
 ## 5. Additional Instructions
 
-- If user says “Give more companies” or “More” – provide a **new list** completely different from the previous one.
-- Always verify the site loads; if not, it’s an automatic 1.0 score and high priority.
-- In the compact output, do not include scores or metrics unless asked.
-- When full analysis is requested, include the complete scoring, metrics, problem list with severity, and an expert explanation of business impact.
-- If site uses Tilda, Wix, Readymag – mark it in the full analysis as “Built on a constructor – limits scalability and integrations”.
+- If the user says "Give me more companies" or "More" – provide a **new list**, completely different from the previous one.
+- Always check if the site opens; if not – that's an automatic 1.0 and a priority candidate.
+- In the report, always mention which tools you used (Lighthouse, Wappalyzer, DevTools).
+- Feel free to comment on the code or site structure if you see gross architectural errors (e.g., outdated libraries, missing caching, etc.).
+- **Important:** If the site uses Tilda, Wix, Readymag, or another builder, it is considered a serious drawback for a B2B company with high turnover (except for temporary landing pages). Mark it in problems as "Site on a builder – limits scalability and integrations".
 
 ---
 
-## 6. Modes
+## 6. Operating Modes
 
-### Default (compact)
-As described in Section 4.
+### Full (on request, IF I ASK)
 
-### Full (on request)
-Provide all details from the original SALES_SKILL_V2.md (scores, metrics, problem list, expert explanation, contact data with messenger probabilities). Use the exact template from the original prompt.
+```
+[КАТЕГОРИЯ ПРОБЛЕМЫ: Медленная загрузка + устаревший дизайн + нет мобильной адаптации]
+
+ООО «Гранд-Мед», Москва
+
+Оценка: 3.2/10 — «LCP = 5.8 с, CLS = 0.35, отсутствует viewport, нет адаптива, контрастность кнопок 2.5:1»
+
+Сайт: https://grand-med.ru
+
+Стек: Tilda (определено по классам .tilda, .t-inner)
+
+Ключевые метрики:
+- LCP: 5.8 с
+- FID: 250 мс
+- CLS: 0.35
+- Время полной загрузки: 7.2 с
+- Размер страницы: 8.4 МБ
+- Количество запросов: 124
+- Мобильная оценка (Lighthouse): 22 / 100
+- Производительность: 31 / 100
+- Доступность: 58 / 100
+- SEO: 62 / 100
+
+Проблемы:
+1. LCP > 4 с – критично (главное изображение не оптимизировано, нет lazy loading)
+2. Отсутствие адаптивной вёрстки – критично (горизонтальный скролл на 375px, текст мелкий)
+3. Низкая контрастность кнопок (2.5:1) – средне (плохо для доступности)
+4. Сайт на Tilda – средне (сложно интегрировать с CRM и аналитикой)
+5. Нет структурированных данных – мелко
+
+Экспертное пояснение: Сайт загружается более 7 секунд, что увеличивает показатель отказов на 70% (по статистике). Отсутствие мобильной версии теряет до 50% трафика (по данным Яндекс.Метрики обычно видно высокую долю мобильных). Низкая контрастность кнопок снижает конверсию в заявки. Tilda не позволяет гибко настраивать воронки и интеграции с 1С, что критично для медицинского центра с дорогими услугами. Редизайн с переходом на React/Next.js и микросервисную архитектуру мог бы окупиться за 3–4 месяца.
+
+Данные для связи:
+- Почты: info@grand-med.ru, director@grand-med.ru, marketing@grand-med.ru
+- ЛПР/HR: Иванов Сергей Петрович – Генеральный директор (найден на странице «Руководство»)
+- Телефоны и мессенджеры:
+  - Телефон: +7 495 123-45-67
+  - WA: 90% → https://wa.me/74951234567
+  - TG: 75% → https://t.me/+74951234567
+  - Viber: 35% → viber://chat?number=74951234567
+  - MAX: 50% → max://chat?phone=74951234567
+```
 
 ---
 
-Now proceed with the search. **Your goal: find 5 companies with a final score ≤ 6.0** (but if you find an ideal candidate with score 1–2, include it). Output clean, clickable URLs without extra symbols (e.g., avoid [reference:0]).
-</find_bad_websites>
+**Final goal:** Your target is to find **5 companies with a final score ≤ 6.0**, but if you find a perfect candidate with a score of 1–2, include them as well. Output clean, clickable links without extra symbols, including `[reference:0]`, etc.
 
-<clone_website>
+# Clone Website (on request)
+
 You are a frontend engineer. Given a reference website URL (the user will provide it), you must:
+
 1. Create a single HTML file that clones the visual style of the reference site – use its colors, typography, layout, and keep all anchor links (`<a href="...">`) working (use `#` for missing pages). Use placeholder images (e.g., picsum.photos) but match the aspect ratios.
 2. Output the complete HTML code in your response.
 3. Provide a bash script that the user can run in an empty folder. The script should:
-   - Create a directory named `[site-name]-demo` (replace with a sensible name).
+   - Create a directory named `[site-name]-demo` (replace with a sensible name) using mkdir.
    - Save the HTML as `index.html` inside that directory.
-   - Use `gowitness` to take a screenshot of the page:
-     ```bash
-     gowitness scan single \
-       --url "file:///$(pwd)/[site-name]-demo/index.html" \
-       --disable-db \
-       --preload-js "document.body.innerHTML = document.querySelector('.bento-grid').outerHTML;"
-      ```
-(Adjust the selector if needed – the script should be flexible.)
+   - Use **Puppeteer** (assumed to be installed globally) to take a full‑page screenshot of the page and convert it to Base64.
+   - Generate an `offer.html` file that contains:
+     - The screenshot displayed inline (embedded via Base64).
+     - A description in **Russian** explaining how the new design improves the client’s business (speed, mobile‑friendliness, conversion).
+     - A clear call‑to‑action (contact for a full proposal)
 
-After the screenshot, generate a description.md file in Russian, explaining to the client:
+The final output files (`index.html` and `offer.html`) must reside in that directory. Bash mode by default. Give me the bash scripts - for creating dir and index.html and for creating screenshots and inserting it into offer.html
+---
 
-What the screenshot shows (a preview of their potential new design).
+## offer.html creation script (using globally installed puppeteer-core)
 
-How the new design improves their business (speed, mobile‑friendliness, conversion).
+Give the following as bash code. Don't forget to update the text.
 
-A call to action (contact for a full proposal).
+```bash
+#!/bin/bash
 
-Output the final files (HTML, screenshot image, description.md) in that directory.
+SITE_NAME=${1:-"site-demo"}
+OUTPUT_DIR="./${SITE_NAME}-demo"
 
-</clone_website>
+cp index.html "$OUTPUT_DIR/"
 
-<file_summary>
-This section contains a summary of this file.
+node -e "
+const puppeteer = require('puppeteer-core');
+const fs = require('fs');
+const path = require('path');
 
-<purpose>
+(async () => {
+  let executablePath = process.env.PUPPETEER_EXECUTABLE_PATH;
+  if (!executablePath) {
+    const commonPaths = [
+      '/usr/bin/google-chrome',
+      '/usr/bin/chromium-browser',
+      '/usr/bin/chromium',
+      '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+      'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'
+    ];
+    for (const p of commonPaths) {
+      if (fs.existsSync(p)) {
+        executablePath = p;
+        break;
+      }
+    }
+  }
+  if (!executablePath) {
+    console.error('ERROR: puppeteer-core requires a browser. Set PUPPETEER_EXECUTABLE_PATH env var.');
+    process.exit(1);
+  }
+
+  const browser = await puppeteer.launch({ headless: true, executablePath });
+  const page = await browser.newPage();
+  const filePath = path.resolve('${OUTPUT_DIR}/index.html');
+  await page.goto('file://' + filePath, { waitUntil: 'networkidle0' });
+  await page.setViewport({ width: 1280, height: 800 });
+
+  // 1. Full‑page screenshot
+  const fullScreenshot = await page.screenshot({ fullPage: true, encoding: 'base64' });
+  fs.writeFileSync('${OUTPUT_DIR}/screenshot.base64', fullScreenshot);
+
+  // 2. Section screenshots (every <section> with an id)
+  const sectionIds = await page.$$eval('section[id]', els => els.map(el => el.id));
+  for (const id of sectionIds) {
+    const el = await page.$('#' + id);
+    if (el) {
+      const b64 = await el.screenshot({ encoding: 'base64' });
+      fs.writeFileSync('${OUTPUT_DIR}/section-' + id + '.base64', b64);
+    }
+  }
+
+  await browser.close();
+})();
+"
+
+cat > "${OUTPUT_DIR}/offer.html" <<'EOF'
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Демонстрация нового дизайна</title>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 700px; margin: 40px auto; padding: 20px; background: #f9f9f9; }
+    .container { background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+    h1 { font-size: 28px; color: #222; margin-top: 0; }
+    .screenshot { max-width: 100%; border: 1px solid #ddd; border-radius: 8px; margin: 20px 0; }
+    .section-gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 20px 0; }
+    .section-gallery img { width: 100%; border: 1px solid #ddd; border-radius: 8px; }
+    .section-gallery p { text-align: center; font-size: 13px; color: #555; margin-top: 4px; }
+    .benefits { background: #f0f4ff; padding: 15px 20px; border-radius: 8px; }
+    .cta { background: #336DFF; color: #fff; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block; font-weight: bold; }
+    .footer { margin-top: 30px; font-size: 14px; color: #777; }
+    @media (max-width: 600px) { .section-gallery { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>🚀 Демонстрация нового дизайна для <strong>${SITE_NAME}</strong></h1>
+  <p>Мы подготовили предварительный макет обновлённого сайта. Ниже — полная страница и каждый ключевой блок отдельно.</p>
+
+  <img src="data:image/png;base64,{{FULL_SCREENSHOT}}" alt="Полная страница" class="screenshot">
+
+  <h3>Ключевые блоки (по якорям)</h3>
+  <div class="section-gallery">
+    {{SECTION_GALLERY}}
+  </div>
+
+  <div class="benefits">
+    <h3>Как новый дизайн улучшает ваш бизнес</h3>
+    <ul>
+      <li><strong>Скорость загрузки</strong> – оптимизация изображений и кода, LCP < 2.5 с.</li>
+      <li><strong>Мобильная адаптация</strong> – идеальное отображение на любых экранах (375–1440px).</li>
+      <li><strong>Конверсия</strong> – чёткие CTA, улучшенная читаемость и доверие к бренду.</li>
+    </ul>
+  </div>
+
+  <p style="margin-top: 24px;">
+    <a href="mailto:info@rovno.dev?subject=Редизайн%20сайта%20${SITE_NAME}" class="cta">Запросить коммерческое предложение</a>
+  </p>
+
+  <div class="footer">
+    С уважением, команда Rovno.dev<br>
+    <a href="mailto:info@rovno.dev">info@rovno.dev</a> | +7 (XXX) XXX-XX-XX
+  </div>
+</div>
+</body>
+</html>
+EOF
+
+sed -i "s|{{FULL_SCREENSHOT}}|$(cat ${OUTPUT_DIR}/screenshot.base64)|g" "${OUTPUT_DIR}/offer.html"
+
+GALLERY_HTML=""
+for b64_file in ${OUTPUT_DIR}/section-*.base64; do
+  if [ -f "$b64_file" ]; then
+    id=$(basename "$b64_file" .base64 | sed 's/section-//')
+    b64_data=$(cat "$b64_file")
+    GALLERY_HTML="${GALLERY_HTML}<div><img src=\"data:image/png;base64,${b64_data}\" alt=\"${id}\" /><p>${id}</p></div>"
+  fi
+done
+
+GALLERY_ESCAPED=$(echo "$GALLERY_HTML" | sed -e 's/[\/&]/\\&/g' -e ':a' -e 'N' -e '$!ba' -e 's/\n/\\n/g')
+sed -i "s|{{SECTION_GALLERY}}|${GALLERY_ESCAPED}|g" "${OUTPUT_DIR}/offer.html"
+
+rm -f "${OUTPUT_DIR}/screenshot.base64"
+rm -f "${OUTPUT_DIR}/section-"*.base64
+
+echo "✅ Done! Files are in ${OUTPUT_DIR}"
+echo "   - ${OUTPUT_DIR}/index.html"
+echo "   - ${OUTPUT_DIR}/offer.html"
+```
+
+## Requirements for the HTML clone
+
+- The cloned HTML must be self‑contained (no external dependencies except images from picsum.photos or similar).
+- All links must work (use `#` for missing pages).
+- The design must faithfully replicate the reference’s visual style (colors, typography, layout).
+- The page should be fully responsive (the screenshot will be taken at 1280×800 viewport, but the design should look good at all sizes).
+
+## Example output (after running the script)
+
+my-site-demo/
+├── index.html # cloned website
+└── offer.html # email‑ready HTML with embedded screenshot
+
+The manager can then open `offer.html`, copy its content, and paste it directly into an email client (Gmail, Outlook, etc.) – the inline image will render correctly because it’s Base64‑encoded.
+
+## File Summary
+
+Now will be the merged representation of the entire codebase, combined into a single document by Repomix.
+
+## Purpose
 This file contains a packed representation of the entire repository's contents.
 It is designed to be easily consumable by AI systems for analysis, code review,
 or other automated processes.
-</purpose>
 
-<file_format>
+## File Format
 The content is organized as follows:
 1. This summary section
 2. Repository information
 3. Directory structure
 4. Repository files (if enabled)
 5. Multiple file entries, each consisting of:
-  - File path as an attribute
-  - Full contents of the file
-</file_format>
+  a. A header with the file path (## File: path/to/file)
+  b. The full contents of the file in a code block
 
-<usage_guidelines>
+## Usage Guidelines
 - This file should be treated as read-only. Any changes should be made to the
   original repository files, not this packed version.
 - When processing this file, use the file path to distinguish
   between different files in the repository.
 - Be aware that this file may contain sensitive information. Handle it with
   the same level of security as you would the original repository.
-</usage_guidelines>
 
-<notes>
+## Notes
 - Some files may have been excluded based on .gitignore rules and Repomix's configuration
 - Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
 - Files matching patterns in .gitignore are excluded
 - Files matching default ignore patterns are excluded
 - Files are sorted by Git change count (files with more changes are at the bottom)
-</notes>
 
-</file_summary>
-
-<directory_structure>
+# Directory Structure
+```
 .agents/
   skills/
     brandkit/
@@ -445,12 +617,12 @@ README.md
 skills-lock.json
 tailwind.config.js
 tsconfig.json
-</directory_structure>
+```
 
-<files>
-This section contains the contents of the repository's files.
+# Files
 
-<file path=".agents/skills/brandkit/SKILL.md">
+## File: .agents/skills/brandkit/SKILL.md
+````markdown
 ---
 name: brandkit
 description: Premium brand-kit image generation skill for creating high-end brand-guidelines boards, logo systems, identity decks, and visual-world presentations. Trained for minimalist, cinematic, editorial, dark-tech, luxury, cultural, security, gaming, developer-tool, and consumer-app brand systems. Optimized for intentional logo concepting, refined composition, sparse typography, strong symbolic meaning, premium mockups, art-directed imagery, and flexible grid layouts.
@@ -567,17 +739,17 @@ The visual system must be based on meaning.
 
 Examples:
 
-| Category | Core Ideas | Possible Symbol Logic |
-|---|---|---|
-| Developer tool | building, speed, precision, control | cursor, frame, bolt, scaffold, grid |
-| AI assistant | delegation, intelligence, clarity | spark, orbit, signal, path, node |
-| Security | protection, vigilance, boundary | shield, eye, seal, protected core |
-| Gaming / betting | chance, reward, tension, speed | dice, gem, card, signal, trophy |
-| Voice AI | sound, rhythm, command, flow | waveform, mic, orb, speech path |
-| Compliance | trust, order, rules, protection | seal, dog, badge, document, shield |
-| Drone / robotics | flight, control, vision, mission | wing, owl, crosshair, path, zone |
-| Luxury / editorial | taste, material, ritual, restraint | monogram, seal, paper, emboss, mark |
-| Productivity | focus, momentum, clarity | path, check, block, calendar, light |
+| Category           | Core Ideas                          | Possible Symbol Logic               |
+| ------------------ | ----------------------------------- | ----------------------------------- |
+| Developer tool     | building, speed, precision, control | cursor, frame, bolt, scaffold, grid |
+| AI assistant       | delegation, intelligence, clarity   | spark, orbit, signal, path, node    |
+| Security           | protection, vigilance, boundary     | shield, eye, seal, protected core   |
+| Gaming / betting   | chance, reward, tension, speed      | dice, gem, card, signal, trophy     |
+| Voice AI           | sound, rhythm, command, flow        | waveform, mic, orb, speech path     |
+| Compliance         | trust, order, rules, protection     | seal, dog, badge, document, shield  |
+| Drone / robotics   | flight, control, vision, mission    | wing, owl, crosshair, path, zone    |
+| Luxury / editorial | taste, material, ritual, restraint  | monogram, seal, paper, emboss, mark |
+| Productivity       | focus, momentum, clarity            | path, check, block, calendar, light |
 
 Do not pick symbols randomly.
 
@@ -1249,9 +1421,10 @@ The final result should be:
 - art-directed
 - implementation-friendly
 - stronger than normal AI-generated brand visuals
-</file>
+````
 
-<file path=".agents/skills/design-taste-frontend/SKILL.md">
+## File: .agents/skills/design-taste-frontend/SKILL.md
+````markdown
 ---
 name: design-taste-frontend
 description: Anti-slop frontend skill for landing pages, portfolios, and redesigns. The agent reads the brief, infers the right design direction, and ships interfaces that do not look templated. Real design systems when applicable, audit-first on redesigns, strict pre-flight check.
@@ -1305,28 +1478,28 @@ After the design read, set three dials. Every layout, motion, and density decisi
 **Baseline:** `8 / 6 / 4`. Use these unless the design read overrides them. Do not ask the user to edit this file - overrides happen conversationally.
 
 ### 1.A Dial Inference (design read → dial values)
-| Signal | VARIANCE | MOTION | DENSITY |
-|---|---|---|---|
-| "minimalist / clean / calm / editorial / Linear-style" | 5-6 | 3-4 | 2-3 |
-| "premium consumer / Apple-y / luxury / brand" | 7-8 | 5-7 | 3-4 |
-| "playful / wild / Dribbble / Awwwards / experimental / agency" | 9-10 | 8-10 | 3-4 |
-| "landing page / portfolio / marketing site (default)" | 7-9 | 6-8 | 3-5 |
-| "trust-first / public-sector / regulated / accessibility-critical" | 3-4 | 2-3 | 4-5 |
-| "redesign - preserve" | match existing | +1 | match existing |
-| "redesign - overhaul" | +2 | +2 | match existing |
+| Signal                                                             | VARIANCE       | MOTION | DENSITY        |
+| ------------------------------------------------------------------ | -------------- | ------ | -------------- |
+| "minimalist / clean / calm / editorial / Linear-style"             | 5-6            | 3-4    | 2-3            |
+| "premium consumer / Apple-y / luxury / brand"                      | 7-8            | 5-7    | 3-4            |
+| "playful / wild / Dribbble / Awwwards / experimental / agency"     | 9-10           | 8-10   | 3-4            |
+| "landing page / portfolio / marketing site (default)"              | 7-9            | 6-8    | 3-5            |
+| "trust-first / public-sector / regulated / accessibility-critical" | 3-4            | 2-3    | 4-5            |
+| "redesign - preserve"                                              | match existing | +1     | match existing |
+| "redesign - overhaul"                                              | +2             | +2     | match existing |
 
 ### 1.B Use-Case Presets
-| Use case | VARIANCE | MOTION | DENSITY |
-|---|---|---|---|
-| Landing (SaaS, mainstream) | 7 | 6 | 4 |
-| Landing (Agency / creative) | 9 | 8 | 3 |
-| Landing (Premium consumer) | 7 | 6 | 3 |
-| Portfolio (Designer / studio) | 8 | 7 | 3 |
-| Portfolio (Developer) | 6 | 5 | 4 |
-| Editorial / Blog | 6 | 4 | 3 |
-| Public-sector service | 3 | 2 | 5 |
-| Redesign - preserve | match | match+1 | match |
-| Redesign - overhaul | +2 | +2 | match |
+| Use case                      | VARIANCE | MOTION  | DENSITY |
+| ----------------------------- | -------- | ------- | ------- |
+| Landing (SaaS, mainstream)    | 7        | 6       | 4       |
+| Landing (Agency / creative)   | 9        | 8       | 3       |
+| Landing (Premium consumer)    | 7        | 6       | 3       |
+| Portfolio (Designer / studio) | 8        | 7       | 3       |
+| Portfolio (Developer)         | 6        | 5       | 4       |
+| Editorial / Blog              | 6        | 4       | 3       |
+| Public-sector service         | 3        | 2       | 5       |
+| Redesign - preserve           | match    | match+1 | match   |
+| Redesign - overhaul           | +2       | +2      | match   |
 
 ### 1.C How the Dials Drive Output
 Use these (or user-overridden values) as global variables. Cross-references throughout this document refer to these exact variable names - never invent aliases like `LAYOUT_VARIANCE` or `ANIM_LEVEL`.
@@ -1338,20 +1511,20 @@ Use these (or user-overridden values) as global variables. Cross-references thro
 Once you have the design read (Section 0) and dials (Section 1), pick the right foundation. Do not invent CSS for things that have an official package. Do not pretend an aesthetic trend is an official system.
 
 ### 2.A When to reach for a real design system (use official packages)
-| Brief reads as… | Reach for | Why |
-|---|---|---|
-| Microsoft / enterprise SaaS / dashboards | `@fluentui/react-components` or `@fluentui/web-components` | Official Fluent UI, Microsoft tokens, accessibility done |
-| Google-ish UI, Material-flavored product | `@material/web` + Material 3 tokens | Official, theme-able via Material Theming |
-| IBM-style B2B / enterprise analytics | `@carbon/react` + `@carbon/styles` | Official Carbon, mature data-density patterns |
-| Shopify app surfaces | `polaris.js` web components / Polaris React | Required for Shopify admin UI |
-| Atlassian / Jira-style product | `@atlaskit/*` + `@atlaskit/tokens` | Official Atlassian DS |
-| GitHub-style devtool / community page | `@primer/css` or `@primer/react-brand` | Official Primer; Brand variant for marketing |
-| Public-sector UK service | `govuk-frontend` | Legally / regulatorily expected |
-| US public-sector / trust-first | `uswds` | Same |
-| Fast local-business / agency MVP | Bootstrap 5.3 | Boring, fast, works |
-| Modern accessible React foundation | `@radix-ui/themes` | Primitives + polished theme |
-| Modern SaaS where you own the components | shadcn/ui (`npx shadcn@latest add ...`) | You own the code, easy to customise; never ship default state |
-| Tailwind-based modern SaaS / AI marketing | Tailwind v4 utilities + `dark:` variant | Default for indie + small team builds |
+| Brief reads as…                           | Reach for                                                  | Why                                                           |
+| ----------------------------------------- | ---------------------------------------------------------- | ------------------------------------------------------------- |
+| Microsoft / enterprise SaaS / dashboards  | `@fluentui/react-components` or `@fluentui/web-components` | Official Fluent UI, Microsoft tokens, accessibility done      |
+| Google-ish UI, Material-flavored product  | `@material/web` + Material 3 tokens                        | Official, theme-able via Material Theming                     |
+| IBM-style B2B / enterprise analytics      | `@carbon/react` + `@carbon/styles`                         | Official Carbon, mature data-density patterns                 |
+| Shopify app surfaces                      | `polaris.js` web components / Polaris React                | Required for Shopify admin UI                                 |
+| Atlassian / Jira-style product            | `@atlaskit/*` + `@atlaskit/tokens`                         | Official Atlassian DS                                         |
+| GitHub-style devtool / community page     | `@primer/css` or `@primer/react-brand`                     | Official Primer; Brand variant for marketing                  |
+| Public-sector UK service                  | `govuk-frontend`                                           | Legally / regulatorily expected                               |
+| US public-sector / trust-first            | `uswds`                                                    | Same                                                          |
+| Fast local-business / agency MVP          | Bootstrap 5.3                                              | Boring, fast, works                                           |
+| Modern accessible React foundation        | `@radix-ui/themes`                                         | Primitives + polished theme                                   |
+| Modern SaaS where you own the components  | shadcn/ui (`npx shadcn@latest add ...`)                    | You own the code, easy to customise; never ship default state |
+| Tailwind-based modern SaaS / AI marketing | Tailwind v4 utilities + `dark:` variant                    | Default for indie + small team builds                         |
 
 **Honesty rule:** if the brief reads as one of the systems above, install and use the **official** package. Do not recreate its CSS by hand. Do not import a system's tokens but then override 90% of them.
 
@@ -1360,16 +1533,16 @@ Once you have the design read (Section 0) and dials (Section 1), pick the right 
 ### 2.B When the brief is an aesthetic, not a system
 For these directions, there is **no single official package**. Build with native CSS + Tailwind + a maintained component library. Be honest in code comments about what is borrowed inspiration vs. official material.
 
-| Aesthetic | Honest implementation |
-|---|---|
-| Glassmorphism / "frosted glass" | `backdrop-filter`, layered borders, highlight overlays. Provide solid-fill fallback for `prefers-reduced-transparency`. |
-| Bento (Apple-style tile grids) | CSS Grid with mixed cell sizes. No single library owns this. |
-| Brutalism | Native CSS, monospace, raw borders. No library. |
-| Editorial / magazine | Serif type, asymmetric grid, generous whitespace. No library. |
-| Dark tech / hacker | Mono + accent neon, terminal motifs. No library. |
-| Aurora / mesh gradients | SVG or layered radial gradients. No library. |
-| Kinetic typography | Native CSS animations, scroll-driven animations, GSAP for hijacks. No library. |
-| **Apple Liquid Glass** | Apple documents this for Apple platforms only. **There is no official `liquid-glass.css`.** Web implementations are approximations using `backdrop-filter` + layered borders + highlights. Label clearly as approximation. |
+| Aesthetic                       | Honest implementation                                                                                                                                                                                                      |
+| ------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Glassmorphism / "frosted glass" | `backdrop-filter`, layered borders, highlight overlays. Provide solid-fill fallback for `prefers-reduced-transparency`.                                                                                                    |
+| Bento (Apple-style tile grids)  | CSS Grid with mixed cell sizes. No single library owns this.                                                                                                                                                               |
+| Brutalism                       | Native CSS, monospace, raw borders. No library.                                                                                                                                                                            |
+| Editorial / magazine            | Serif type, asymmetric grid, generous whitespace. No library.                                                                                                                                                              |
+| Dark tech / hacker              | Mono + accent neon, terminal motifs. No library.                                                                                                                                                                           |
+| Aurora / mesh gradients         | SVG or layered radial gradients. No library.                                                                                                                                                                               |
+| Kinetic typography              | Native CSS animations, scroll-driven animations, GSAP for hijacks. No library.                                                                                                                                             |
+| **Apple Liquid Glass**          | Apple documents this for Apple platforms only. **There is no official `liquid-glass.css`.** Web implementations are approximations using `backdrop-filter` + layered borders + highlights. Label clearly as approximation. |
 
 ---
 
@@ -2458,9 +2631,10 @@ But that is **web glassmorphism / frosted-glass approximation**, not official Ap
 ---
 
 **End of appendices.** Install commands above are reality anchors. The Apple Liquid Glass skeleton is a labeled approximation, not an Apple-issued package. For canonical docs per design system, consult the system's official docs (links in Section 2 plus Appendix B).
-</file>
+````
 
-<file path=".agents/skills/design-taste-frontend-v1/SKILL.md">
+## File: .agents/skills/design-taste-frontend-v1/SKILL.md
+````markdown
 ---
 name: design-taste-frontend-v1
 description: The original v1 taste-skill, preserved for projects depending on its exact behavior. The current default is `design-taste-frontend` (v2 experimental), which is a substantial rewrite. Use this v1 install name only if you need exact backward compatibility.
@@ -2687,9 +2861,10 @@ Evaluate your code against this matrix before outputting. This is the **last** f
 - [ ] Are empty, loading, and error states provided?
 - [ ] Are cards omitted in favor of spacing where possible?
 - [ ] Did you strictly isolate CPU-heavy perpetual animations in their own Client Components?
-</file>
+````
 
-<file path=".agents/skills/full-output-enforcement/SKILL.md">
+## File: .agents/skills/full-output-enforcement/SKILL.md
+````markdown
 ---
 name: full-output-enforcement
 description: Overrides default LLM truncation behavior. Enforces complete code generation, bans placeholder patterns, and handles token-limit splits cleanly. Apply to any task requiring exhaustive, unabridged output.
@@ -2739,9 +2914,10 @@ Before finalizing any response, verify:
 - Every item the user requested is present and finished
 - Code blocks contain actual runnable code, not descriptions of what code would do
 - Nothing was shortened to save space
-</file>
+````
 
-<file path=".agents/skills/gpt-taste/SKILL.md">
+## File: .agents/skills/gpt-taste/SKILL.md
+````markdown
 ---
 name: gpt-taste
 description: Elite UX/UI & Advanced GSAP Motion Engineer. Enforces Python-driven true randomization for layout variance, strict AIDA page structure, wide editorial typography (bans 6-line wraps), gapless bento grids, strict GSAP ScrollTriggers (pinning, stacking, scrubbing), inline micro-images, and massive section spacing.
@@ -2816,9 +2992,10 @@ Before writing ANY React/UI code, you MUST output a `<design_plan>` block contai
 4. **Bento Density Verification:** Prove mathematically that your grid columns and rows leave zero empty spaces and `grid-flow-dense` is applied.
 5. **Label Sweep & Button Check:** Confirm no cheap meta-labels ("QUESTION 05") exist, and button text contrast is perfect.
 Only output the UI code after this rigorous verification is complete.
-</file>
+````
 
-<file path=".agents/skills/high-end-visual-design/SKILL.md">
+## File: .agents/skills/high-end-visual-design/SKILL.md
+````markdown
 ---
 name: high-end-visual-design
 description: Teaches the AI to design like a high-end agency. Defines the exact fonts, spacing, shadows, card structures, and animations that make a website feel expensive. Blocks all the common defaults that make AI designs look cheap or generic.
@@ -2917,9 +3094,10 @@ Evaluate your code against this matrix before delivering. This is the last filte
 - [ ] All animations use only `transform` and `opacity` — no layout-triggering properties
 - [ ] `backdrop-blur` is only applied to fixed/sticky elements, never to scrolling content
 - [ ] The overall impression reads as "$150k agency build", not "template with nice fonts"
-</file>
+````
 
-<file path=".agents/skills/image-to-code/SKILL.md">
+## File: .agents/skills/image-to-code/SKILL.md
+````markdown
 ---
 name: image-to-code
 description: Elite website image-to-code skill for Codex. For visually important web tasks, it must first generate the design image(s) itself, deeply analyze them, then implement the website to match them as closely as possible. In Codex, it must prefer large, readable, section-specific images instead of tiny compressed boards, generate fresh standalone images for sections or detail views instead of cropping old ones, avoid lazy under-generation, avoid cards-inside-cards-inside-cards UI, and keep the hero clean, spacious, readable, and visible on a small laptop.
@@ -4148,9 +4326,10 @@ The result should be:
 - and strong as implemented frontend
 
 The final outcome should look like a top-tier website concept translated faithfully into real code, not a tiny unreadable design board and not a generic coded reinterpretation.
-</file>
+````
 
-<file path=".agents/skills/imagegen-frontend-mobile/SKILL.md">
+## File: .agents/skills/imagegen-frontend-mobile/SKILL.md
+````markdown
 ---
 name: imagegen-frontend-mobile
 description: Elite mobile app image-generation skill for creating premium, app-native screen concepts and flows. Designed for iOS, Android, and cross-platform mobile products. Prioritizes clean hierarchy, comfortably readable text, strong multi-screen consistency, controlled color palettes, non-generic creative direction, textured surfaces, image-led composition, tasteful custom iconography, and clean phone mockup framing. By default, screens should be shown inside a subtle premium iPhone or similar phone mockup with a visible frame, while the main focus stays on the app content itself. This skill generates images only. It does not write code.
@@ -5616,9 +5795,10 @@ It should actively avoid:
 - oversized device framing that distracts from the design
 
 The final result should look like a high-end mobile app concept with clean hierarchy, good flow logic, strong visual taste, richer image direction, a clean controlled color palette, non-generic art direction, strong multi-screen consistency, readable typography, premium phone mockup framing, and clear platform-aware structure.
-</file>
+````
 
-<file path=".agents/skills/imagegen-frontend-web/SKILL.md">
+## File: .agents/skills/imagegen-frontend-web/SKILL.md
+````markdown
 ---
 name: imagegen-frontend-web
 description: Elite frontend image-direction skill for generating premium, conversion-aware website design references. CRITICAL OUTPUT RULE — generate ONE separate horizontal image FOR EVERY section. A landing page with 8 sections produces 8 images. Never compress multiple sections into one image. Enforces composition variety (not always left-text / right-image), background-image freedom, varied CTAs, varied hero scales (giant / mid / mini minimalist), narrative concept spine, second-read moments, and a single consistent palette across all images. Optimized for landing pages, marketing sites, and product comps that developers or coding models can accurately recreate.
@@ -6606,9 +6786,10 @@ Generate frontend reference images that feel:
 - implementation-friendly
 
 The result should look like a top-tier website concept with strong imagery, confident creativity, and generous spacing - not a dense, repetitive AI layout.
-</file>
+````
 
-<file path=".agents/skills/industrial-brutalist-ui/SKILL.md">
+## File: .agents/skills/industrial-brutalist-ui/SKILL.md
+````markdown
 ---
 name: industrial-brutalist-ui
 description: Raw mechanical interfaces fusing Swiss typographic print with military terminal aesthetics. Rigid grids, extreme type scale contrast, utilitarian color, analog degradation effects. For data-heavy dashboards, portfolios, or editorial sites that need to feel like declassified blueprints.
@@ -6701,9 +6882,10 @@ To prevent the design from appearing purely digital, simulated analog degradatio
 1.  **Grid Determinism:** Utilize `display: grid; gap: 1px;` with contrasting parent/child background colors to generate mathematically perfect, razor-thin dividing lines without complex border declarations.
 2.  **Semantic Rigidity:** Construct the DOM using precise semantic tags (`<data>`, `<samp>`, `<kbd>`, `<output>`, `<dl>`) to accurately reflect the technical nature of the telemetry.
 3.  **Typography Clamping:** Implement CSS `clamp()` functions exclusively for macro-typography to ensure massive text scales aggressively while maintaining structural integrity across viewports.
-</file>
+````
 
-<file path=".agents/skills/minimalist-ui/SKILL.md">
+## File: .agents/skills/minimalist-ui/SKILL.md
+````markdown
 ---
 name: minimalist-ui
 description: Clean editorial-style interfaces. Warm monochrome palette, typographic contrast, flat bento grids, muted pastels. No gradients, no heavy shadows.
@@ -6789,9 +6971,10 @@ When tasked with writing frontend code (HTML, React, Tailwind, Vue) or designing
 5. Add scroll-entry animations to all major content blocks.
 6. Ensure sections have visual depth through imagery, ambient gradients, or subtle textures — no empty flat backgrounds.
 7. Provide code that reflects this high-end, uncluttered, editorial aesthetic natively without requiring manual adjustments.
-</file>
+````
 
-<file path=".agents/skills/redesign-existing-projects/SKILL.md">
+## File: .agents/skills/redesign-existing-projects/SKILL.md
+````markdown
 ---
 name: redesign-existing-projects
 description: Upgrades existing websites and apps to premium quality. Audits current design, identifies generic AI patterns, and applies high-end design standards without breaking functionality. Works with any CSS framework or vanilla CSS.
@@ -6970,9 +7153,10 @@ Apply changes in this order for maximum visual impact with minimum risk:
 - If the project uses Tailwind, check the version (v3 vs v4) before modifying config.
 - If the project has no framework, use vanilla CSS.
 - Keep changes reviewable and focused. Small, targeted improvements over big rewrites.
-</file>
+````
 
-<file path=".agents/skills/stitch-design-taste/DESIGN.md">
+## File: .agents/skills/stitch-design-taste/DESIGN.md
+````markdown
 # Design System: Taste Standard
 **Skill:** stitch-design-taste
 
@@ -6981,12 +7165,12 @@ Apply changes in this order for maximum visual impact with minimum risk:
 ## Configuration — Set Your Style
 Adjust these dials before using this design system. They control how creative, dense, and animated the output should be. Pick the level that fits your project.
 
-| Dial | Level | Description |
-|------|-------|-------------|
-| **Creativity** | `8` | `1` = Ultra-minimal, Swiss, silent, monochrome. `5` = Balanced, clean but with personality. `10` = Expressive, editorial, bold typography experiments, inline images in headlines, strong asymmetry. Default: `8` |
-| **Density** | `4` | `1` = Gallery-airy, massive whitespace. `5` = Balanced sections. `10` = Cockpit-dense, data-heavy. Default: `4` |
-| **Variance** | `8` | `1` = Predictable, symmetric grids. `5` = Subtle offsets. `10` = Artsy chaotic, no two sections alike. Default: `8` |
-| **Motion Intent** | `6` | `1` = Static, no animation noted. `5` = Subtle hover/entrance cues. `10` = Cinematic orchestration noted in every component. Default: `6` |
+| Dial              | Level | Description                                                                                                                                                                                                       |
+| ----------------- | ----- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Creativity**    | `8`   | `1` = Ultra-minimal, Swiss, silent, monochrome. `5` = Balanced, clean but with personality. `10` = Expressive, editorial, bold typography experiments, inline images in headlines, strong asymmetry. Default: `8` |
+| **Density**       | `4`   | `1` = Gallery-airy, massive whitespace. `5` = Balanced sections. `10` = Cockpit-dense, data-heavy. Default: `4`                                                                                                   |
+| **Variance**      | `8`   | `1` = Predictable, symmetric grids. `5` = Subtle offsets. `10` = Artsy chaotic, no two sections alike. Default: `8`                                                                                               |
+| **Motion Intent** | `6`   | `1` = Static, no animation noted. `5` = Subtle hover/entrance cues. `10` = Cinematic orchestration noted in every component. Default: `6`                                                                         |
 
 > **How to use:** Change the numbers above to match your project's vibe. At **Creativity 1–3**, the system produces clean, quiet, Notion-like interfaces. At **Creativity 7–10**, expect inline image typography, dramatic scale contrast, and strong editorial layouts. The rest of the rules below adapt to your chosen levels.
 
@@ -7094,9 +7278,10 @@ Every screen must work flawlessly across all viewports. **Responsive is not opti
 - No `z-index` spam — use only for Navbar, Modal, Overlay layer contexts
 - No `h-screen` — always `min-h-[100dvh]`
 - No circular loading spinners — skeletal shimmer only
-</file>
+````
 
-<file path=".agents/skills/stitch-design-taste/SKILL.md">
+## File: .agents/skills/stitch-design-taste/SKILL.md
+````markdown
 ---
 name: stitch-design-taste
 description: Semantic Design System Skill for Google Stitch. Generates agent-friendly DESIGN.md files that enforce premium, anti-generic UI standards — strict typography, calibrated color, asymmetric layouts, perpetual micro-motion, and hardware-accelerated performance.
@@ -7281,9 +7466,10 @@ no generic placeholder names, no broken image links.)
 - Being too vague in atmosphere descriptions
 - Ignoring the anti-pattern list — these are what make the output premium
 - Defaulting to generic "safe" designs instead of enforcing the curated aesthetic
-</file>
+````
 
-<file path=".agents/skills/AGENTS.md">
+## File: .agents/skills/AGENTS.md
+````markdown
 # Global Rules: Lazy & Rigorous Engineer
 
 You are a **lazy senior engineer**, **Linus Torwalds**, **CTO**, **Full-stack with 12y experience** and **designer that does cooler than an Apple** (apple.com, nextjs.org, instagram.com, vercel.com, mui.com, sber.ru, ozon.ru, chatgpt.com), **knows an every stack on planet Earth**, does not write comments (only comments for AI) and don't make an errors – lazy means efficient, not careless. Combine surgical precision with ruthless pragmatism.
@@ -7407,9 +7593,10 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 **These guidelines are working if:** fewer unnecessary changes in diffs, fewer rewrites due to overcomplication, and clarifying questions come before implementation rather than after mistakes.
 
 ## Just wait for the tasks
-</file>
+````
 
-<file path="app/(HomePage)/_components/elements-showcase.tsx">
+## File: app/(HomePage)/_components/elements-showcase.tsx
+````typescript
 "use client";
 
 import { useState } from "react";
@@ -7688,9 +7875,10 @@ export function ElementsShowcase() {
     </section>
   );
 }
-</file>
+````
 
-<file path="app/(HomePage)/_components/hero-section.tsx">
+## File: app/(HomePage)/_components/hero-section.tsx
+````typescript
 "use client";
 
 import { useState, useEffect } from "react";
@@ -7828,9 +8016,10 @@ export function HeroSection() {
     </section>
   );
 }
-</file>
+````
 
-<file path="app/(HomePage)/_components/typography-color-showcase.tsx">
+## File: app/(HomePage)/_components/typography-color-showcase.tsx
+````typescript
 "use client";
 
 import { useState, useEffect } from "react";
@@ -8015,9 +8204,10 @@ export function TypographyColorShowcase() {
     </section>
   );
 }
-</file>
+````
 
-<file path="app/(Subdomains)/_FAKE-API/layout.tsx">
+## File: app/(Subdomains)/_FAKE-API/layout.tsx
+````typescript
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -8036,9 +8226,10 @@ export default function FakeApiRootLayout({
     </>
   );
 }
-</file>
+````
 
-<file path="app/(Subdomains)/_FAKE-API/page.tsx">
+## File: app/(Subdomains)/_FAKE-API/page.tsx
+````typescript
 import { ApiReferenceReact } from '@scalar/api-reference-react';
 import '@scalar/api-reference-react/style.css'
 import { Container } from '@/components/ui/container';
@@ -8167,9 +8358,10 @@ export default function Home() {
     </>
   );
 }
-</file>
+````
 
-<file path="app/unideka-base.css">
+## File: app/unideka-base.css
+````css
 :root {
   --white: #ffffff;
 
@@ -8359,9 +8551,10 @@ export default function Home() {
   --screen-xl: 1280px;
   --screen-2xl: 1536px;
 }
-</file>
+````
 
-<file path="components/icons/logotypes/chrome-logotype-icon.tsx">
+## File: components/icons/logotypes/chrome-logotype-icon.tsx
+````typescript
 import { Icon, IconProps } from "@/components/icons/icon"
 
 export function ChromeLogotypeIcon(props: IconProps) {
@@ -8377,9 +8570,10 @@ export function ChromeLogotypeIcon(props: IconProps) {
     </Icon>
   )
 }
-</file>
+````
 
-<file path="components/icons/logotypes/dprofile-logotype-mono-icon.tsx">
+## File: components/icons/logotypes/dprofile-logotype-mono-icon.tsx
+````typescript
 import { Icon, IconProps } from "@/components/icons/icon"
 
 export function DprofileLogotypeMonoIcon(props: IconProps) {
@@ -8389,9 +8583,10 @@ export function DprofileLogotypeMonoIcon(props: IconProps) {
     </Icon>
   )
 }
-</file>
+````
 
-<file path="components/icons/logotypes/pinterest-logotype-mono-icon.tsx">
+## File: components/icons/logotypes/pinterest-logotype-mono-icon.tsx
+````typescript
 import { Icon, IconProps } from "@/components/icons/icon"
 
 export function PinterestLogotypeMonoIcon(props: IconProps) {
@@ -8401,9 +8596,10 @@ export function PinterestLogotypeMonoIcon(props: IconProps) {
     </Icon>
   )
 }
-</file>
+````
 
-<file path="components/icons/logotypes/telegram-logotype-icon.tsx">
+## File: components/icons/logotypes/telegram-logotype-icon.tsx
+````typescript
 import { Icon, IconProps } from "@/components/icons/icon"
 
 export function TelegramLogotypeIcon(props: IconProps) {
@@ -8420,9 +8616,10 @@ export function TelegramLogotypeIcon(props: IconProps) {
     </Icon>
   )
 }
-</file>
+````
 
-<file path="components/icons/logotypes/telegram-logotype-mono-icon.tsx">
+## File: components/icons/logotypes/telegram-logotype-mono-icon.tsx
+````typescript
 import { Icon, IconProps } from "@/components/icons/icon"
 
 export function TelegramLogotypeMonoIcon(props: IconProps) {
@@ -8432,9 +8629,10 @@ export function TelegramLogotypeMonoIcon(props: IconProps) {
     </Icon>
   )
 }
-</file>
+````
 
-<file path="components/icons/logotypes/vk-logotype-mono-icon.tsx">
+## File: components/icons/logotypes/vk-logotype-mono-icon.tsx
+````typescript
 import { Icon, IconProps } from "@/components/icons/icon"
 
 export function VKLogotypeMonoIcon(props: IconProps) {
@@ -8444,9 +8642,10 @@ export function VKLogotypeMonoIcon(props: IconProps) {
     </Icon>
   )
 }
-</file>
+````
 
-<file path="components/icons/unideka-icons/article-icon.tsx">
+## File: components/icons/unideka-icons/article-icon.tsx
+````typescript
 import { Icon, IconProps } from "@/components/icons/icon"
 
 export function ArticleIcon(props: IconProps) {
@@ -8456,9 +8655,10 @@ export function ArticleIcon(props: IconProps) {
     </Icon>
   )
 }
-</file>
+````
 
-<file path="components/icons/unideka-icons/check-circle-icon.tsx">
+## File: components/icons/unideka-icons/check-circle-icon.tsx
+````typescript
 import { Icon, IconProps } from "@/components/icons/icon"
 
 export function CheckCircleIcon(props: IconProps) {
@@ -8468,9 +8668,10 @@ export function CheckCircleIcon(props: IconProps) {
     </Icon>
   )
 }
-</file>
+````
 
-<file path="components/icons/unideka-icons/check-indeterminate-small-icon.tsx">
+## File: components/icons/unideka-icons/check-indeterminate-small-icon.tsx
+````typescript
 import { Icon, IconProps } from "@/components/icons/icon"
 
 export function CheckIndeterminateSmallIcon(props: IconProps) {
@@ -8480,9 +8681,10 @@ export function CheckIndeterminateSmallIcon(props: IconProps) {
     </Icon>
   )
 }
-</file>
+````
 
-<file path="components/icons/unideka-icons/check-small-icon.tsx">
+## File: components/icons/unideka-icons/check-small-icon.tsx
+````typescript
 import { Icon, IconProps } from "@/components/icons/icon"
 
 export function CheckSmallIcon(props: IconProps) {
@@ -8492,9 +8694,10 @@ export function CheckSmallIcon(props: IconProps) {
     </Icon>
   )
 }
-</file>
+````
 
-<file path="components/icons/unideka-icons/close-small-icon.tsx">
+## File: components/icons/unideka-icons/close-small-icon.tsx
+````typescript
 import { Icon, IconProps } from "@/components/icons/icon"
 
 export function CloseSmallIcon(props: IconProps) {
@@ -8504,9 +8707,10 @@ export function CloseSmallIcon(props: IconProps) {
     </Icon>
   )
 }
-</file>
+````
 
-<file path="components/icons/unideka-icons/cloud-icon.tsx">
+## File: components/icons/unideka-icons/cloud-icon.tsx
+````typescript
 import { Icon, IconProps } from "@/components/icons/icon"
 
 export function CloudIcon(props: IconProps) {
@@ -8516,9 +8720,10 @@ export function CloudIcon(props: IconProps) {
     </Icon>
   )
 }
-</file>
+````
 
-<file path="components/icons/unideka-icons/deployed-code-icon.tsx">
+## File: components/icons/unideka-icons/deployed-code-icon.tsx
+````typescript
 import { Icon, IconProps } from "@/components/icons/icon"
 
 export function DeployedCodeIcon(props: IconProps) {
@@ -8528,9 +8733,10 @@ export function DeployedCodeIcon(props: IconProps) {
     </Icon>
   )
 }
-</file>
+````
 
-<file path="components/icons/unideka-icons/design-services-icon.tsx">
+## File: components/icons/unideka-icons/design-services-icon.tsx
+````typescript
 import { Icon, IconProps } from "@/components/icons/icon"
 
 export function DesignServicesIcon(props: IconProps) {
@@ -8540,9 +8746,10 @@ export function DesignServicesIcon(props: IconProps) {
     </Icon>
   )
 }
-</file>
+````
 
-<file path="components/icons/unideka-icons/diamond-icon.tsx">
+## File: components/icons/unideka-icons/diamond-icon.tsx
+````typescript
 import { Icon, IconProps } from "@/components/icons/icon"
 
 export function DiamondIcon(props: IconProps) {
@@ -8552,9 +8759,10 @@ export function DiamondIcon(props: IconProps) {
     </Icon>
   )
 }
-</file>
+````
 
-<file path="components/icons/unideka-icons/dock-to-bottom-icon.tsx">
+## File: components/icons/unideka-icons/dock-to-bottom-icon.tsx
+````typescript
 import { Icon, IconProps } from "@/components/icons/icon"
 
 export function DockToBottomIcon(props: IconProps) {
@@ -8564,9 +8772,10 @@ export function DockToBottomIcon(props: IconProps) {
     </Icon>
   )
 }
-</file>
+````
 
-<file path="components/icons/unideka-icons/dock-to-left-icon.tsx">
+## File: components/icons/unideka-icons/dock-to-left-icon.tsx
+````typescript
 import { Icon, IconProps } from "@/components/icons/icon"
 
 export function DockToLeftIcon(props: IconProps) {
@@ -8576,9 +8785,10 @@ export function DockToLeftIcon(props: IconProps) {
     </Icon>
   )
 }
-</file>
+````
 
-<file path="components/icons/unideka-icons/dock-to-right-icon.tsx">
+## File: components/icons/unideka-icons/dock-to-right-icon.tsx
+````typescript
 import { Icon, IconProps } from "@/components/icons/icon"
 
 export function DockToRightIcon(props: IconProps) {
@@ -8588,9 +8798,10 @@ export function DockToRightIcon(props: IconProps) {
     </Icon>
   )
 }
-</file>
+````
 
-<file path="components/icons/unideka-icons/info-icon copy.tsx">
+## File: components/icons/unideka-icons/info-icon copy.tsx
+````typescript
 import { Icon, IconProps } from "@/components/icons/icon"
 
 export function InfoIcon(props: IconProps) {
@@ -8600,9 +8811,10 @@ export function InfoIcon(props: IconProps) {
     </Icon>
   )
 }
-</file>
+````
 
-<file path="components/icons/unideka-icons/info-icon.tsx">
+## File: components/icons/unideka-icons/info-icon.tsx
+````typescript
 import { Icon, IconProps } from "@/components/icons/icon"
 
 export function InfoIcon(props: IconProps) {
@@ -8612,9 +8824,10 @@ export function InfoIcon(props: IconProps) {
     </Icon>
   )
 }
-</file>
+````
 
-<file path="components/icons/unideka-icons/keyboard-arrow-down-icon.tsx">
+## File: components/icons/unideka-icons/keyboard-arrow-down-icon.tsx
+````typescript
 import { Icon, IconProps } from "@/components/icons/icon"
 
 export function KeyboardArrowDownIcon(props: IconProps) {
@@ -8624,9 +8837,10 @@ export function KeyboardArrowDownIcon(props: IconProps) {
     </Icon>
   )
 }
-</file>
+````
 
-<file path="components/icons/unideka-icons/keyboard-arrow-left-icon.tsx">
+## File: components/icons/unideka-icons/keyboard-arrow-left-icon.tsx
+````typescript
 import { Icon, IconProps } from "@/components/icons/icon"
 
 export function KeyboardArrowLeftIcon(props: IconProps) {
@@ -8636,9 +8850,10 @@ export function KeyboardArrowLeftIcon(props: IconProps) {
     </Icon>
   )
 }
-</file>
+````
 
-<file path="components/icons/unideka-icons/keyboard-arrow-right-icon.tsx">
+## File: components/icons/unideka-icons/keyboard-arrow-right-icon.tsx
+````typescript
 import { Icon, IconProps } from "@/components/icons/icon"
 
 export function KeyboardArrowRightIcon(props: IconProps) {
@@ -8648,9 +8863,10 @@ export function KeyboardArrowRightIcon(props: IconProps) {
     </Icon>
   )
 }
-</file>
+````
 
-<file path="components/icons/unideka-icons/keyboard-arrow-up-icon.tsx">
+## File: components/icons/unideka-icons/keyboard-arrow-up-icon.tsx
+````typescript
 import { Icon, IconProps } from "@/components/icons/icon"
 
 export function KeyboardArrowUpIcon(props: IconProps) {
@@ -8660,9 +8876,10 @@ export function KeyboardArrowUpIcon(props: IconProps) {
     </Icon>
   )
 }
-</file>
+````
 
-<file path="components/icons/unideka-icons/more-horizontal-icon.tsx">
+## File: components/icons/unideka-icons/more-horizontal-icon.tsx
+````typescript
 import { Icon, IconProps } from "@/components/icons/icon"
 
 export function MoreHorizontalIcon(props: IconProps) {
@@ -8672,9 +8889,10 @@ export function MoreHorizontalIcon(props: IconProps) {
     </Icon>
   )
 }
-</file>
+````
 
-<file path="components/icons/unideka-icons/night-icon.tsx">
+## File: components/icons/unideka-icons/night-icon.tsx
+````typescript
 import { Icon, IconProps } from "@/components/icons/icon"
 
 export function NightIcon(props: IconProps) {
@@ -8684,9 +8902,10 @@ export function NightIcon(props: IconProps) {
     </Icon>
   )
 }
-</file>
+````
 
-<file path="components/icons/unideka-icons/octagon-icon.tsx">
+## File: components/icons/unideka-icons/octagon-icon.tsx
+````typescript
 import { Icon, IconProps } from "@/components/icons/icon"
 
 export function OctagonIcon(props: IconProps) {
@@ -8696,9 +8915,10 @@ export function OctagonIcon(props: IconProps) {
     </Icon>
   )
 }
-</file>
+````
 
-<file path="components/icons/unideka-icons/progress-activity-icon.tsx">
+## File: components/icons/unideka-icons/progress-activity-icon.tsx
+````typescript
 import { Icon, IconProps } from "@/components/icons/icon"
 
 export function ProgressActivityIcon(props: IconProps) {
@@ -8708,9 +8928,10 @@ export function ProgressActivityIcon(props: IconProps) {
     </Icon>
   )
 }
-</file>
+````
 
-<file path="components/icons/unideka-icons/public-icon.tsx">
+## File: components/icons/unideka-icons/public-icon.tsx
+````typescript
 import { Icon, IconProps } from "@/components/icons/icon"
 
 export function PublicIcon(props: IconProps) {
@@ -8720,9 +8941,10 @@ export function PublicIcon(props: IconProps) {
     </Icon>
   )
 }
-</file>
+````
 
-<file path="components/icons/unideka-icons/search-icon.tsx">
+## File: components/icons/unideka-icons/search-icon.tsx
+````typescript
 import { Icon, IconProps } from "@/components/icons/icon"
 
 export function SearchIcon(props: IconProps) {
@@ -8732,9 +8954,10 @@ export function SearchIcon(props: IconProps) {
     </Icon>
   )
 }
-</file>
+````
 
-<file path="components/icons/unideka-icons/stylus-note-icon.tsx">
+## File: components/icons/unideka-icons/stylus-note-icon.tsx
+````typescript
 import { Icon, IconProps } from "@/components/icons/icon"
 
 export function StylusNoteIcon(props: IconProps) {
@@ -8744,9 +8967,10 @@ export function StylusNoteIcon(props: IconProps) {
     </Icon>
   )
 }
-</file>
+````
 
-<file path="components/icons/unideka-icons/sun-icon.tsx">
+## File: components/icons/unideka-icons/sun-icon.tsx
+````typescript
 import { Icon, IconProps } from "@/components/icons/icon"
 
 export function SunIcon(props: IconProps) {
@@ -8756,9 +8980,10 @@ export function SunIcon(props: IconProps) {
     </Icon>
   )
 }
-</file>
+````
 
-<file path="components/icons/unideka-icons/system-theme-icon.tsx">
+## File: components/icons/unideka-icons/system-theme-icon.tsx
+````typescript
 import { Icon, IconProps } from "@/components/icons/icon"
 
 export function SystemThemeIcon(props: IconProps) {
@@ -8768,9 +8993,10 @@ export function SystemThemeIcon(props: IconProps) {
     </Icon>
   )
 }
-</file>
+````
 
-<file path="components/icons/unideka-icons/warning-icon.tsx">
+## File: components/icons/unideka-icons/warning-icon.tsx
+````typescript
 import { Icon, IconProps } from "@/components/icons/icon"
 
 export function WarningIcon(props: IconProps) {
@@ -8780,9 +9006,10 @@ export function WarningIcon(props: IconProps) {
     </Icon>
   )
 }
-</file>
+````
 
-<file path="components/icons/unideka-icons/work-icon.tsx">
+## File: components/icons/unideka-icons/work-icon.tsx
+````typescript
 import { Icon, IconProps } from "@/components/icons/icon"
 
 export function WorkIcon(props: IconProps) {
@@ -8792,9 +9019,10 @@ export function WorkIcon(props: IconProps) {
     </Icon>
   )
 }
-</file>
+````
 
-<file path="components/icons/icon.tsx">
+## File: components/icons/icon.tsx
+````typescript
 import * as React from "react"
 import { cn } from "@/lib/utils"
 
@@ -8826,9 +9054,10 @@ export const Icon = React.forwardRef<SVGSVGElement, IconProps>(
 )
 
 Icon.displayName = "Icon"
-</file>
+````
 
-<file path="components/icons/index.tsx">
+## File: components/icons/index.tsx
+````typescript
 export * from "./icon"
 export * from "./unideka-icons/keyboard-arrow-down-icon"
 export * from "./unideka-icons/keyboard-arrow-up-icon"
@@ -8864,9 +9093,10 @@ export * from "./logotypes/telegram-logotype-mono-icon"
 export * from "./logotypes/pinterest-logotype-mono-icon"
 export * from "./logotypes/dprofile-logotype-mono-icon"
 export * from "./logotypes/vk-logotype-mono-icon"
-</file>
+````
 
-<file path="components/layout/calendars/pricing-calendar.tsx">
+## File: components/layout/calendars/pricing-calendar.tsx
+````typescript
 "use client";
 
 import { type DateRange } from "react-day-picker";
@@ -8926,9 +9156,10 @@ export function PricingCalendar({
     </div>
   );
 }
-</file>
+````
 
-<file path="components/layout/experts-icons/Tatarstan-icon.tsx">
+## File: components/layout/experts-icons/Tatarstan-icon.tsx
+````typescript
 import { IconProps } from "@/utils/interfaces";
 
 
@@ -8989,9 +9220,10 @@ export default function TatarstanIcon(props: IconProps) {
     </svg>
   )
 }
-</file>
+````
 
-<file path="components/layout/illustration-card/illustration-card.tsx">
+## File: components/layout/illustration-card/illustration-card.tsx
+````typescript
 import { buttonUnidekaVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -9007,9 +9239,10 @@ export default function IllustrationCard({ icon, className, style }: { icon: Rea
     </div>
   );
 }
-</file>
+````
 
-<file path="components/layout/logotype/logotype-icon.tsx">
+## File: components/layout/logotype/logotype-icon.tsx
+````typescript
 import { IconProps } from "@/utils/interfaces";
 
 
@@ -9022,9 +9255,10 @@ export default function LogotypeIcon({ width = 26, height = 26, style, className
     </svg>
   );
 }
-</file>
+````
 
-<file path="components/layout/logotype/logotype.tsx">
+## File: components/layout/logotype/logotype.tsx
+````typescript
 import { IconProps } from "@/utils/interfaces";
 
 export default function Logotype({ style, className }: IconProps) {
@@ -9045,9 +9279,10 @@ export default function Logotype({ style, className }: IconProps) {
     </svg>
   );
 }
-</file>
+````
 
-<file path="components/layout/page/page-heading-section.tsx">
+## File: components/layout/page/page-heading-section.tsx
+````typescript
 /* LLM context: Enhancing PageHeadingSection to support an optional illustration slot. 
    Uses a responsive grid (2 columns on desktop) to balance text and graphics. 
    Maintains Apple-grade staggered entry animations. */
@@ -9103,9 +9338,10 @@ export default function PageHeadingSection({
     </section>
   );
 }
-</file>
+````
 
-<file path="components/layout/nav-link.tsx">
+## File: components/layout/nav-link.tsx
+````typescript
 "use client"
 
 import * as React from "react"
@@ -9142,9 +9378,10 @@ export function NavLink({
     />
   )
 }
-</file>
+````
 
-<file path="components/layout/showcase-card.tsx">
+## File: components/layout/showcase-card.tsx
+````typescript
 /* LLM context: Refactoring ShowcaseCard to support href and children-based content pattern */
 
 import { ReactNode } from "react";
@@ -9190,9 +9427,10 @@ export function ShowcaseCard({ id, count, href, children }: ShowcaseCardProps) {
     </Button>
   )
 }
-</file>
+````
 
-<file path="components/ui/accordion.tsx">
+## File: components/ui/accordion.tsx
+````typescript
 "use client"
 
 import * as React from "react"
@@ -9274,9 +9512,10 @@ function AccordionContent({
 }
 
 export { Accordion, AccordionItem, AccordionTrigger, AccordionContent }
-</file>
+````
 
-<file path="components/ui/alert-dialog.tsx">
+## File: components/ui/alert-dialog.tsx
+````typescript
 "use client"
 
 import * as React from "react"
@@ -9476,9 +9715,10 @@ export {
   AlertDialogTitle,
   AlertDialogTrigger,
 }
-</file>
+````
 
-<file path="components/ui/alert.tsx">
+## File: components/ui/alert.tsx
+````typescript
 import * as React from "react"
 import { cva, type VariantProps } from "class-variance-authority"
 
@@ -9555,9 +9795,10 @@ function AlertAction({ className, ...props }: React.ComponentProps<"div">) {
 }
 
 export { Alert, AlertTitle, AlertDescription, AlertAction }
-</file>
+````
 
-<file path="components/ui/aspect-ratio.tsx">
+## File: components/ui/aspect-ratio.tsx
+````typescript
 "use client"
 
 import { AspectRatio as AspectRatioPrimitive } from "radix-ui"
@@ -9569,9 +9810,10 @@ function AspectRatio({
 }
 
 export { AspectRatio }
-</file>
+````
 
-<file path="components/ui/avatar.tsx">
+## File: components/ui/avatar.tsx
+````typescript
 "use client"
 
 import * as React from "react"
@@ -9684,9 +9926,10 @@ export {
   AvatarGroupCount,
   AvatarBadge,
 }
-</file>
+````
 
-<file path="components/ui/breadcrumb.tsx">
+## File: components/ui/breadcrumb.tsx
+````typescript
 import * as React from "react"
 import { Slot } from "radix-ui"
 
@@ -9808,9 +10051,10 @@ export {
   BreadcrumbSeparator,
   BreadcrumbEllipsis,
 }
-</file>
+````
 
-<file path="components/ui/button-group.tsx">
+## File: components/ui/button-group.tsx
+````typescript
 import { cva, type VariantProps } from "class-variance-authority"
 import { Slot } from "radix-ui"
 
@@ -9894,9 +10138,10 @@ export {
   ButtonGroupText,
   buttonGroupVariants,
 }
-</file>
+````
 
-<file path="components/ui/button.tsx">
+## File: components/ui/button.tsx
+````typescript
 /* LLM context: Forcing SVG internal paths to inherit current color in Button components to fix dark icons on primary buttons in light theme */
 
 import * as React from "react"
@@ -9986,9 +10231,10 @@ function Button({
 }
 
 export { Button, buttonVariants }
-</file>
+````
 
-<file path="components/ui/calendar.tsx">
+## File: components/ui/calendar.tsx
+````typescript
 "use client"
 
 import * as React from "react"
@@ -10211,9 +10457,10 @@ function CalendarDayButton({
 }
 
 export { Calendar, CalendarDayButton }
-</file>
+````
 
-<file path="components/ui/carousel.tsx">
+## File: components/ui/carousel.tsx
+````typescript
 "use client"
 
 import * as React from "react"
@@ -10456,9 +10703,10 @@ export {
   CarouselNext,
   useCarousel,
 }
-</file>
+````
 
-<file path="components/ui/chart.tsx">
+## File: components/ui/chart.tsx
+````typescript
 "use client"
 
 import * as React from "react"
@@ -10832,9 +11080,10 @@ export {
   ChartLegendContent,
   ChartStyle,
 }
-</file>
+````
 
-<file path="components/ui/checkbox.tsx">
+## File: components/ui/checkbox.tsx
+````typescript
 "use client"
 
 import * as React from "react"
@@ -10868,9 +11117,10 @@ function Checkbox({
 }
 
 export { Checkbox }
-</file>
+````
 
-<file path="components/ui/collapsible.tsx">
+## File: components/ui/collapsible.tsx
+````typescript
 "use client"
 
 import { Collapsible as CollapsiblePrimitive } from "radix-ui"
@@ -10904,9 +11154,10 @@ function CollapsibleContent({
 }
 
 export { Collapsible, CollapsibleTrigger, CollapsibleContent }
-</file>
+````
 
-<file path="components/ui/command.tsx">
+## File: components/ui/command.tsx
+````typescript
 "use client"
 
 import * as React from "react"
@@ -11102,9 +11353,10 @@ export {
   CommandShortcut,
   CommandSeparator,
 }
-</file>
+````
 
-<file path="components/ui/container.tsx">
+## File: components/ui/container.tsx
+````typescript
 import { cn } from "@/lib/utils"
 
 export function Container({ variant = 'default', className, ...props }: React.ComponentProps<"div"> & { variant?: 'default' | 'full-width' }) {
@@ -11120,9 +11372,10 @@ export function Container({ variant = 'default', className, ...props }: React.Co
     />
   )
 }
-</file>
+````
 
-<file path="components/ui/context-menu.tsx">
+## File: components/ui/context-menu.tsx
+````typescript
 "use client"
 
 import * as React from "react"
@@ -11386,9 +11639,10 @@ export {
   ContextMenuSubTrigger,
   ContextMenuRadioGroup,
 }
-</file>
+````
 
-<file path="components/ui/dialog.tsx">
+## File: components/ui/dialog.tsx
+````typescript
 "use client"
 
 import * as React from "react"
@@ -11557,9 +11811,10 @@ export {
   DialogTitle,
   DialogTrigger,
 }
-</file>
+````
 
-<file path="components/ui/direction.tsx">
+## File: components/ui/direction.tsx
+````typescript
 "use client"
 
 import * as React from "react"
@@ -11582,9 +11837,10 @@ function DirectionProvider({
 const useDirection = Direction.useDirection
 
 export { DirectionProvider, useDirection }
-</file>
+````
 
-<file path="components/ui/drawer.tsx">
+## File: components/ui/drawer.tsx
+````typescript
 "use client"
 
 import * as React from "react"
@@ -11719,9 +11975,10 @@ export {
   DrawerTitle,
   DrawerDescription,
 }
-</file>
+````
 
-<file path="components/ui/dropdown-menu.tsx">
+## File: components/ui/dropdown-menu.tsx
+````typescript
 "use client"
 
 import * as React from "react"
@@ -11991,9 +12248,10 @@ export {
   DropdownMenuSubTrigger,
   DropdownMenuSubContent,
 }
-</file>
+````
 
-<file path="components/ui/empty.tsx">
+## File: components/ui/empty.tsx
+````typescript
 import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
@@ -12098,9 +12356,10 @@ export {
   EmptyContent,
   EmptyMedia,
 }
-</file>
+````
 
-<file path="components/ui/field.tsx">
+## File: components/ui/field.tsx
+````typescript
 "use client"
 
 import { useMemo } from "react"
@@ -12339,9 +12598,10 @@ export {
   FieldContent,
   FieldTitle,
 }
-</file>
+````
 
-<file path="components/ui/hover-card.tsx">
+## File: components/ui/hover-card.tsx
+````typescript
 "use client"
 
 import * as React from "react"
@@ -12386,9 +12646,10 @@ function HoverCardContent({
 }
 
 export { HoverCard, HoverCardTrigger, HoverCardContent }
-</file>
+````
 
-<file path="components/ui/input-otp.tsx">
+## File: components/ui/input-otp.tsx
+````typescript
 "use client"
 
 import * as React from "react"
@@ -12476,9 +12737,10 @@ function InputOTPSeparator({ ...props }: React.ComponentProps<"div">) {
 }
 
 export { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator }
-</file>
+````
 
-<file path="components/ui/item.tsx">
+## File: components/ui/item.tsx
+````typescript
 import * as React from "react"
 import { cva, type VariantProps } from "class-variance-authority"
 import { Slot } from "radix-ui"
@@ -12675,9 +12937,10 @@ export {
   ItemHeader,
   ItemFooter,
 }
-</file>
+````
 
-<file path="components/ui/kbd.tsx">
+## File: components/ui/kbd.tsx
+````typescript
 import { cn } from "@/lib/utils"
 
 function Kbd({ className, ...props }: React.ComponentProps<"kbd">) {
@@ -12704,9 +12967,10 @@ function KbdGroup({ className, ...props }: React.ComponentProps<"div">) {
 }
 
 export { Kbd, KbdGroup }
-</file>
+````
 
-<file path="components/ui/label.tsx">
+## File: components/ui/label.tsx
+````typescript
 "use client"
 
 import * as React from "react"
@@ -12731,9 +12995,10 @@ function Label({
 }
 
 export { Label }
-</file>
+````
 
-<file path="components/ui/menubar.tsx">
+## File: components/ui/menubar.tsx
+````typescript
 "use client"
 
 import * as React from "react"
@@ -13014,9 +13279,10 @@ export {
   MenubarSubTrigger,
   MenubarSubContent,
 }
-</file>
+````
 
-<file path="components/ui/navigation-menu.tsx">
+## File: components/ui/navigation-menu.tsx
+````typescript
 import * as React from "react"
 import { cva } from "class-variance-authority"
 import { NavigationMenu as NavigationMenuPrimitive } from "radix-ui"
@@ -13181,9 +13447,10 @@ export {
   NavigationMenuViewport,
   navigationMenuTriggerStyle,
 }
-</file>
+````
 
-<file path="components/ui/pagination.tsx">
+## File: components/ui/pagination.tsx
+````typescript
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
@@ -13313,9 +13580,10 @@ export {
   PaginationNext,
   PaginationPrevious,
 }
-</file>
+````
 
-<file path="components/ui/popover.tsx">
+## File: components/ui/popover.tsx
+````typescript
 "use client"
 
 import * as React from "react"
@@ -13405,9 +13673,10 @@ export {
   PopoverTitle,
   PopoverTrigger,
 }
-</file>
+````
 
-<file path="components/ui/progress.tsx">
+## File: components/ui/progress.tsx
+````typescript
 "use client"
 
 import * as React from "react"
@@ -13439,9 +13708,10 @@ function Progress({
 }
 
 export { Progress }
-</file>
+````
 
-<file path="components/ui/radio-group.tsx">
+## File: components/ui/radio-group.tsx
+````typescript
 "use client"
 
 import * as React from "react"
@@ -13486,9 +13756,10 @@ function RadioGroupItem({
 }
 
 export { RadioGroup, RadioGroupItem }
-</file>
+````
 
-<file path="components/ui/resizable.tsx">
+## File: components/ui/resizable.tsx
+````typescript
 "use client"
 
 import * as ResizablePrimitive from "react-resizable-panels"
@@ -13539,9 +13810,10 @@ function ResizableHandle({
 }
 
 export { ResizableHandle, ResizablePanel, ResizablePanelGroup }
-</file>
+````
 
-<file path="components/ui/scroll-area.tsx">
+## File: components/ui/scroll-area.tsx
+````typescript
 "use client"
 
 import * as React from "react"
@@ -13597,9 +13869,10 @@ function ScrollBar({
 }
 
 export { ScrollArea, ScrollBar }
-</file>
+````
 
-<file path="components/ui/separator.tsx">
+## File: components/ui/separator.tsx
+````typescript
 "use client"
 
 import * as React from "react"
@@ -13628,9 +13901,10 @@ function Separator({
 }
 
 export { Separator }
-</file>
+````
 
-<file path="components/ui/sheet.tsx">
+## File: components/ui/sheet.tsx
+````typescript
 "use client"
 
 import * as React from "react"
@@ -13778,9 +14052,10 @@ export {
   SheetTitle,
   SheetDescription,
 }
-</file>
+````
 
-<file path="components/ui/sidebar.tsx">
+## File: components/ui/sidebar.tsx
+````typescript
 "use client"
 
 import * as React from "react"
@@ -14483,9 +14758,10 @@ export {
   SidebarTrigger,
   useSidebar,
 }
-</file>
+````
 
-<file path="components/ui/skeleton.tsx">
+## File: components/ui/skeleton.tsx
+````typescript
 import { cn } from "@/lib/utils"
 
 function Skeleton({ className, ...props }: React.ComponentProps<"div">) {
@@ -14499,9 +14775,10 @@ function Skeleton({ className, ...props }: React.ComponentProps<"div">) {
 }
 
 export { Skeleton }
-</file>
+````
 
-<file path="components/ui/slider.tsx">
+## File: components/ui/slider.tsx
+````typescript
 "use client"
 
 import * as React from "react"
@@ -14561,9 +14838,10 @@ function Slider({
 }
 
 export { Slider }
-</file>
+````
 
-<file path="components/ui/sonner.tsx">
+## File: components/ui/sonner.tsx
+````typescript
 "use client"
 
 import { useTheme } from "next-themes"
@@ -14613,9 +14891,10 @@ const Toaster = ({ ...props }: ToasterProps) => {
 }
 
 export { Toaster }
-</file>
+````
 
-<file path="components/ui/spinner.tsx">
+## File: components/ui/spinner.tsx
+````typescript
 import { cn } from "@/lib/utils"
 import { ProgressActivityIcon } from "@/components/icons"
 
@@ -14626,9 +14905,10 @@ function Spinner({ className, ...props }: React.ComponentProps<"svg">) {
 }
 
 export { Spinner }
-</file>
+````
 
-<file path="components/ui/switch.tsx">
+## File: components/ui/switch.tsx
+````typescript
 "use client"
 
 import * as React from "react"
@@ -14662,9 +14942,10 @@ function Switch({
 }
 
 export { Switch }
-</file>
+````
 
-<file path="components/ui/table.tsx">
+## File: components/ui/table.tsx
+````typescript
 "use client"
 
 import * as React from "react"
@@ -14781,9 +15062,10 @@ export {
   TableCell,
   TableCaption,
 }
-</file>
+````
 
-<file path="components/ui/tabs.tsx">
+## File: components/ui/tabs.tsx
+````typescript
 "use client"
 
 import * as React from "react"
@@ -14874,9 +15156,10 @@ function TabsContent({
 }
 
 export { Tabs, TabsList, TabsTrigger, TabsContent, tabsListVariants }
-</file>
+````
 
-<file path="components/ui/toggle-group.tsx">
+## File: components/ui/toggle-group.tsx
+````typescript
 "use client"
 
 import * as React from "react"
@@ -14966,9 +15249,10 @@ function ToggleGroupItem({
 }
 
 export { ToggleGroup, ToggleGroupItem }
-</file>
+````
 
-<file path="components/ui/toggle.tsx">
+## File: components/ui/toggle.tsx
+````typescript
 "use client"
 
 import * as React from "react"
@@ -15016,9 +15300,10 @@ function Toggle({
 }
 
 export { Toggle, toggleVariants }
-</file>
+````
 
-<file path="components/ui/tooltip.tsx">
+## File: components/ui/tooltip.tsx
+````typescript
 "use client"
 
 import * as React from "react"
@@ -15076,9 +15361,10 @@ function TooltipContent({
 }
 
 export { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger }
-</file>
+````
 
-<file path="e2e/pages.spec.ts">
+## File: e2e/pages.spec.ts
+````typescript
 import { test, expect } from '@playwright/test';
 
 test.describe('Rovno.dev Pages', () => {
@@ -15342,9 +15628,10 @@ test.describe('Rovno.dev Pages', () => {
     await expect(metaDescription).toHaveAttribute('content', /Rovno.dev/);
   });
 });
-</file>
+````
 
-<file path="hooks/use-mobile.ts">
+## File: hooks/use-mobile.ts
+````typescript
 import * as React from "react"
 
 const MOBILE_BREAKPOINT = 768
@@ -15364,18 +15651,20 @@ export function useIsMobile() {
 
   return !!isMobile
 }
-</file>
+````
 
-<file path="lib/utils.ts">
+## File: lib/utils.ts
+````typescript
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
-</file>
+````
 
-<file path="providers/theme-provider.tsx">
+## File: providers/theme-provider.tsx
+````typescript
 "use client"
 
 import { createContext, useContext, useEffect, useState } from "react"
@@ -15437,9 +15726,10 @@ export const useTheme = () => {
   if (!context) throw new Error("useTheme must be used within a ThemeProvider")
   return context
 }
-</file>
+````
 
-<file path="public/_static/experts/niyazgim/data.md">
+## File: public/_static/experts/niyazgim/data.md
+````markdown
 ---
 name: Нияз Гимадиев
 regalia: ["Со-основатель и Тех. Дир.", "Основатель Вершин", "Автор тех самых стихов"]
@@ -15447,9 +15737,10 @@ location: Казань
 ---
 
 Текст про эксперта
-</file>
+````
 
-<file path="utils/interfaces/index.ts">
+## File: utils/interfaces/index.ts
+````typescript
 import { CSSProperties } from "react";
 
 export interface IconProps {
@@ -15458,9 +15749,10 @@ export interface IconProps {
   style?: CSSProperties,
   className?: string,
 }
-</file>
+````
 
-<file path="utils/styles/effects.tsx">
+## File: utils/styles/effects.tsx
+````typescript
 const effectStyles = {
   shadow: {
     raitingChip: "0px 3px 20px rgba(18, 18, 18, 0.01)",
@@ -15468,13 +15760,15 @@ const effectStyles = {
     card: "2px 2px 20px rgba(18, 18, 18, 0.03)",
   },
 };
-</file>
+````
 
-<file path="utils/types/index.ts">
+## File: utils/types/index.ts
+````typescript
 
-</file>
+````
 
-<file path=".repomixignore">
+## File: .repomixignore
+````
 *.exe
 *.exe~
 *.dll
@@ -15495,9 +15789,10 @@ go.work.sum
 services/*/tmp/
 .aider*
 repomix*
-</file>
+````
 
-<file path="components.json">
+## File: components.json
+````json
 {
   "$schema": "https://ui.shadcn.com/schema.json",
   "style": "unideka-ui",
@@ -15523,9 +15818,10 @@ repomix*
   "menuAccent": "subtle",
   "registries": {}
 }
-</file>
+````
 
-<file path="Dockerfile">
+## File: Dockerfile
+````dockerfile
 # ===============================
 # Base
 # ===============================
@@ -15562,9 +15858,10 @@ COPY --from=builder /app/public ./public
 
 EXPOSE 3000
 CMD ["node", "server.js"]
-</file>
+````
 
-<file path="eslint.config.mjs">
+## File: eslint.config.mjs
+````javascript
 import { defineConfig, globalIgnores } from "eslint/config";
 import nextVitals from "eslint-config-next/core-web-vitals";
 import nextTs from "eslint-config-next/typescript";
@@ -15583,9 +15880,10 @@ const eslintConfig = defineConfig([
 ]);
 
 export default eslintConfig;
-</file>
+````
 
-<file path="LICENSE">
+## File: LICENSE
+````
 Apache License
                            Version 2.0, January 2004
                         http://www.apache.org/licenses/
@@ -15787,9 +16085,10 @@ Apache License
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-</file>
+````
 
-<file path="next.config.ts">
+## File: next.config.ts
+````typescript
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
@@ -15797,9 +16096,10 @@ const nextConfig: NextConfig = {
 };
 
 export default nextConfig;
-</file>
+````
 
-<file path="postcss.config.mjs">
+## File: postcss.config.mjs
+````javascript
 const config = {
   plugins: {
     "@tailwindcss/postcss": {},
@@ -15807,9 +16107,10 @@ const config = {
 };
 
 export default config;
-</file>
+````
 
-<file path="proxy.ts">
+## File: proxy.ts
+````typescript
 import { NextResponse, NextRequest } from 'next/server';
 
 export function proxy(req: NextRequest) {
@@ -15833,9 +16134,10 @@ export function proxy(req: NextRequest) {
     return NextResponse.rewrite(new URL('FAKE-API/', req.url));
   }
 }
-</file>
+````
 
-<file path="README.md">
+## File: README.md
+````markdown
 # Rovno.dev - Agency web app
 
 Official source code of the [Rovno.dev](https://rovno.dev) agency web app. 
@@ -15900,9 +16202,10 @@ npm run dev
 ```
 
 Built with ❤️ by [Niyaz Gimadiev](https://rovno.dev/u/niyazgim)
-</file>
+````
 
-<file path="skills-lock.json">
+## File: skills-lock.json
+````json
 {
   "version": 1,
   "skills": {
@@ -15986,9 +16289,10 @@ Built with ❤️ by [Niyaz Gimadiev](https://rovno.dev/u/niyazgim)
     }
   }
 }
-</file>
+````
 
-<file path="tailwind.config.js">
+## File: tailwind.config.js
+````javascript
 /* LLM context: Keeping JS config focused on simple font-scaling utilities while moving experimental CSS to globals.css for parser safety. */
 import plugin from 'tailwindcss/plugin';
 
@@ -16019,9 +16323,10 @@ export default plugin(function ({ addUtilities }) {
 
   addUtilities(newUtilities);
 });
-</file>
+````
 
-<file path=".github/workflows/deploy.yaml">
+## File: .github/workflows/deploy.yaml
+````yaml
 # name: Deploy Frontend
 
 # on:
@@ -16047,9 +16352,10 @@ export default plugin(function ({ addUtilities }) {
 
 #             cd ${{ secrets.INFRA_PATH }}
 #             make rebuild ENV=prod SERVICES=${{ secrets.CONTAINER_NAME }}
-</file>
+````
 
-<file path="app/globals.css">
+## File: app/globals.css
+````css
 /* LLM context: Adding refined motion primitives and global entry animations for high-end feel */
 @import url('./unideka-base.css');
 @import "tailwindcss";
@@ -16387,9 +16693,10 @@ export default plugin(function ({ addUtilities }) {
 *::-webkit-scrollbar-thumb:hover {
   background: var(--on-bg-low);
 }
-</file>
+````
 
-<file path="app/layout.tsx">
+## File: app/layout.tsx
+````typescript
 import "./globals.css";
 import type { Metadata } from "next";
 import { TooltipProvider } from "@/components/ui/tooltip"
@@ -16464,9 +16771,10 @@ export default function RootLayout({
     </html >
   );
 }
-</file>
+````
 
-<file path="components/icons/logotypes/github-logotype-mono-icon.tsx">
+## File: components/icons/logotypes/github-logotype-mono-icon.tsx
+````typescript
 import { Icon, IconProps } from "@/components/icons/icon"
 
 export function GithubLogotypeMonoIcon(props: IconProps) {
@@ -16476,9 +16784,10 @@ export function GithubLogotypeMonoIcon(props: IconProps) {
     </Icon>
   )
 }
-</file>
+````
 
-<file path="components/layout/bottom-app-bar.tsx">
+## File: components/layout/bottom-app-bar.tsx
+````typescript
 "use client"
 
 import { ROUTES } from "@/utils/constants/routes";
@@ -16545,9 +16854,10 @@ export default function BottomAppBar() {
     </nav>
   );
 }
-</file>
+````
 
-<file path="components/layout/theme-switcher.tsx">
+## File: components/layout/theme-switcher.tsx
+````typescript
 /* LLM context: Fixing icon overlap in trigger and enhancing DropdownMenu item layout */
 
 "use client"
@@ -16591,9 +16901,10 @@ export function ThemeSwitcher() {
     </DropdownMenu>
   )
 }
-</file>
+````
 
-<file path="components/ui/badge.tsx">
+## File: components/ui/badge.tsx
+````typescript
 "use client";
 
 import * as React from "react"
@@ -16658,9 +16969,10 @@ function Badge({
 }
 
 export { Badge, badgeVariants }
-</file>
+````
 
-<file path="components/ui/card.tsx">
+## File: components/ui/card.tsx
+````typescript
 import * as React from "react"
 import { cn } from "@/lib/utils"
 
@@ -16699,9 +17011,10 @@ function Card({ className, href, children, ...props }: CardProps) {
 }
 
 export { Card }
-</file>
+````
 
-<file path="components/ui/combobox.tsx">
+## File: components/ui/combobox.tsx
+````typescript
 "use client"
 
 import * as React from "react"
@@ -17004,9 +17317,10 @@ export {
   ComboboxValue,
   useComboboxAnchor,
 }
-</file>
+````
 
-<file path="components/ui/input-group.tsx">
+## File: components/ui/input-group.tsx
+````typescript
 "use client"
 
 import * as React from "react"
@@ -17163,9 +17477,10 @@ export {
   InputGroupInput,
   InputGroupTextarea,
 }
-</file>
+````
 
-<file path="components/ui/input.tsx">
+## File: components/ui/input.tsx
+````typescript
 import * as React from "react"
 import { cn } from "@/lib/utils"
 
@@ -17184,9 +17499,10 @@ function Input({ className, type, ...props }: React.ComponentProps<"input">) {
 }
 
 export { Input }
-</file>
+````
 
-<file path="components/ui/native-select.tsx">
+## File: components/ui/native-select.tsx
+````typescript
 import * as React from "react"
 import { cn } from "@/lib/utils"
 import { KeyboardArrowDownIcon } from "@/components/icons"
@@ -17247,9 +17563,10 @@ function NativeSelectOptGroup({
 }
 
 export { NativeSelect, NativeSelectOptGroup, NativeSelectOption }
-</file>
+````
 
-<file path="components/ui/select.tsx">
+## File: components/ui/select.tsx
+````typescript
 "use client"
 
 import * as React from "react"
@@ -17442,9 +17759,10 @@ export {
   SelectTrigger,
   SelectValue,
 }
-</file>
+````
 
-<file path="components/ui/textarea.tsx">
+## File: components/ui/textarea.tsx
+````typescript
 import * as React from "react"
 import { cn } from "@/lib/utils"
 
@@ -17462,9 +17780,10 @@ function Textarea({ className, ...props }: React.ComponentProps<"textarea">) {
 }
 
 export { Textarea }
-</file>
+````
 
-<file path=".gitignore">
+## File: .gitignore
+````
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
@@ -17509,9 +17828,10 @@ next-env.d.ts
 .aider*
 
 repomix*
-</file>
+````
 
-<file path="package.json">
+## File: package.json
+````json
 {
   "name": "unideka-ui-template",
   "version": "0.1.0",
@@ -17564,9 +17884,10 @@ repomix*
     "typescript": "^5"
   }
 }
-</file>
+````
 
-<file path="tsconfig.json">
+## File: tsconfig.json
+````json
 {
   "compilerOptions": {
     "target": "ES2017",
@@ -17610,9 +17931,10 @@ repomix*
     "node_modules"
   ]
 }
-</file>
+````
 
-<file path="app/(HomePage)/_components/support-cost-form.tsx">
+## File: app/(HomePage)/_components/support-cost-form.tsx
+````typescript
 "use client";
 
 import { useState, useMemo, useCallback, memo } from "react";
@@ -17855,9 +18177,10 @@ export default function SupportCostForm() {
     </>
   );
 }
-</file>
+````
 
-<file path="app/(HomePage)/page.tsx">
+## File: app/(HomePage)/page.tsx
+````typescript
 import { ElementsShowcase } from "./_components/elements-showcase";
 import { HeroSection } from "./_components/hero-section";
 import { TypographyColorShowcase } from "./_components/typography-color-showcase";
@@ -17871,9 +18194,10 @@ export default function HomePage() {
     </>
   );
 }
-</file>
+````
 
-<file path="components/layout/project-card/project-card.tsx">
+## File: components/layout/project-card/project-card.tsx
+````typescript
 // import { Project } from "@/app/_[slug]/(Project)/data";
 // import { Card } from "@/components/ui/card";
 // import Image from "next/image"
@@ -17907,9 +18231,10 @@ export default function HomePage() {
 //     </a>
 //   );
 // }
-</file>
+````
 
-<file path="components/layout/footer.tsx">
+## File: components/layout/footer.tsx
+````typescript
 import Link from "next/link";
 import { Container } from "@/components/ui/container";
 import Logotype from "./logotype/logotype";
@@ -18055,9 +18380,10 @@ export default function Footer() {
     </footer>
   );
 }
-</file>
+````
 
-<file path="components/layout/header.tsx">
+## File: components/layout/header.tsx
+````typescript
 "use client";
 
 import { useState, useEffect } from "react";
@@ -18136,9 +18462,10 @@ export default function Header() {
     </header>
   );
 }
-</file>
+````
 
-<file path="utils/constants/routes.tsx">
+## File: utils/constants/routes.tsx
+````typescript
 import { ReactNode } from "react";
 
 export interface RouteLinkProps {
@@ -18179,6 +18506,4 @@ export const ROUTES = {
     title: "Фейк АПИ",
   },
 }
-</file>
-
-</files>
+````
