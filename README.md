@@ -14,7 +14,13 @@ Tool that:
 docker build -t shap-yasa .
 ```
 
-Then just run container and execute code inside of it
+Then just run container as bash
+
+```bash
+docker run --rm -it --entrypoint bash shap-yasa
+```
+
+And execute commands inside container
 
 ### Using setup script
 
