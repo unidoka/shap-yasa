@@ -8,6 +8,12 @@ Tool that:
 
 ## Getting started
 
+### Using npx skills
+
+```bash
+npx skills@latest add unidoka/shap-yasa
+```
+
 ### Using Docker
 
 ```bash
@@ -28,21 +34,14 @@ Run this script in terminal (use WSL on Windows):
 
 ```bash
 #!/bin/bash
-# setup.sh – Install dependencies for WSL/Linux (Ubuntu/Debian)
 
 set -euo pipefail
 
 echo "🚀 Starting environment setup..."
 
-# ----------------------------------------------------------
-# 1. System update & basic tools
-# ----------------------------------------------------------
 sudo apt update -y
 sudo apt install -y curl wget unzip software-properties-common apt-transport-https ca-certificates gnupg
 
-# ----------------------------------------------------------
-# 2. Install Node.js & npm (if missing)
-# ----------------------------------------------------------
 if ! command -v node &> /dev/null; then
     echo "📦 Installing Node.js LTS from NodeSource..."
     curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
@@ -51,9 +50,6 @@ else
     echo "✅ Node.js already installed: $(node -v)"
 fi
 
-# ----------------------------------------------------------
-# 3. Install Chromium (for Puppeteer)
-# ----------------------------------------------------------
 CHROME_PATH=""
 if command -v chromium-browser &> /dev/null; then
     CHROME_PATH=$(which chromium-browser)
@@ -71,9 +67,6 @@ fi
 
 echo "✅ Chrome/Chromium found at: $CHROME_PATH"
 
-# ----------------------------------------------------------
-# 4. Install puppeteer-core globally
-# ----------------------------------------------------------
 if ! npm list -g puppeteer-core &> /dev/null; then
     echo "📦 Installing puppeteer-core globally..."
     sudo npm install -g puppeteer-core
@@ -81,9 +74,6 @@ else
     echo "✅ puppeteer-core already installed globally."
 fi
 
-# ----------------------------------------------------------
-# 5. Set environment variable for Puppeteer (persistent)
-# ----------------------------------------------------------
 if ! grep -q "PUPPETEER_EXECUTABLE_PATH" ~/.bashrc; then
     echo "export PUPPETEER_EXECUTABLE_PATH=\"$CHROME_PATH\"" >> ~/.bashrc
     echo "✅ Added PUPPETEER_EXECUTABLE_PATH to ~/.bashrc"
@@ -91,12 +81,8 @@ else
     echo "ℹ️  PUPPETEER_EXECUTABLE_PATH already set in ~/.bashrc"
 fi
 
-# Source to apply now
 export PUPPETEER_EXECUTABLE_PATH="$CHROME_PATH"
 
-# ----------------------------------------------------------
-# 6. Verify everything works
-# ----------------------------------------------------------
 echo ""
 echo "✅ All dependencies installed!"
 echo "   Node: $(node -v)"
@@ -108,10 +94,9 @@ echo "To apply the environment variable in this terminal, run:"
 echo "  source ~/.bashrc"
 ```
 
-
 ## Usage
 
-1) Give AI AGENTS.md file.
+1) If you use an chat versions use `repomix . --style markdown` to get one file.
 2) Then after 1 run grab result and add `Bash mode, clone website` and report about website.
 3) Paste code in terminal.
 4) `offer.html` is the file with html for offer email, `index.html` - file with site redisigned version.
