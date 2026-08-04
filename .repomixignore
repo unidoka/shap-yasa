@@ -19,7 +19,19 @@ services/*/tmp/
 .aider*
 repomix*
 
+skills-lock.json
+package-lock.json
+
 Dockerfile
 LICENSE
 
+README.md
+
 .gitignore
+
+# SKILLS you might not needed
+.agents/skills/design-taste-frontend-v1
+.agents/skills/industrial-brutalist-ui
+.agents/skills/high-end-visual-design
+.agents/skills/gpt-taste
+.agents/skills/stitch-design-taste

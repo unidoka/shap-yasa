@@ -1,0 +1,11 @@
+{
+  "output": {
+    "style": "markdown",
+    "headerText": "",
+    "instruction": false,
+    "fileSummary": false,
+    "directoryStructure": false,
+    "removeComments": true,
+    "showLineNumbers": false
+  }
+}
