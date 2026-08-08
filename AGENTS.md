@@ -8,6 +8,8 @@ This repository contains two production-ready AI agent skills for high-ticket we
 - **Skill Path:** `.agents/skills/find-check-websites/SKILL.md`
 
 ## clone-present
-- **Description:** Clones the visual style of a target URL, applies premium "Taste Skills v2" design upgrades (banning Inter, AI-purple, centered heroes, and emojis), and generates a self-contained `index.html`, email-ready `offer.html`, and `presentation.pdf`.
-- **Arguments:** `<url>`
-- **Skill Path:** `.agents/skills/clone-present/SKILL.md`
+
+- **Description:** Make redisign, presentation and text for messengers or email of url or urls given. If context or prompt has errors description you need to try to fix it.
+- **Platforms**: only Unix (WSL, Linux, MacOS).
+- **Important**: Use scripts and tempates from context (`./scripts` and `./templates` folders). Dont clone files, use PROJECT_DIR as orientir to grab content and execute scripts from this absolute path.
+- **Arguments**: `<url or report content>`

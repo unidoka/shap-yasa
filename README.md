@@ -96,7 +96,11 @@ echo "  source ~/.bashrc"
 
 ## Usage
 
-1) If you use an chat versions use `repomix . --style markdown` to get one file.
-2) Then after 1 run grab result and add `Bash mode, clone website` and report about website.
-3) Paste code in terminal.
-4) `offer.html` is the file with html for offer email, `index.html` - file with site redisigned version.
+1. **Capture Screenshots:**
+  `node scripts/1-capture.js "client-name" "path/to/mockup/index.html"`
+2. **Generate Presentation:**
+  `node scripts/2-present.js "client-name" "path/to/content.json"`
+  *Note: content.json should define hero_title, hero_description, and an array of 'updates' with section IDs.*
+3. **Generate Email & Messenger Text:**
+  `node scripts/3-email.js "client-name" "path/to/content.json"`
+  `node scripts/4-messenger.js "client-name" "path/to/content.json"`

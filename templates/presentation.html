@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <section class="slide">
+    <div class="content-wrap">
+      <div>
+        <span class="label">Digital Agency Full-Cycle</span>
+        <h1 class="t-huge">{{hero_title}}<br /><span class="accent">{{hero_subtitle}}</span></h1>
+        <a href="https://rovno.dev/projects" class="btn-primary">Смотреть проекты</a>
+      </div>
+      <p style="font-size: 24px; color: var(--text-medium);">{{hero_description}}</p>
+    </div>
+    <div class="footer"><span>ROVNO.DEV</span><span>2026</span></div>
+  </section>
+  <section class="slide">
+    <span class="label">Mockup Preview</span>
+    <h2 class="t-large">Общий<br /><span class="accent">Вид</span></h2>
+    <div class="gallery-item"><img src="data:image/png;base64,{{FULL_SCREENSHOT}}"></div>
+  </section>
+  <section class="slide">
+    <span class="label">Deep Dive</span>
+    <h2 class="t-large">Что мы<br /><span class="accent">Изменили</span></h2>
+    {{SECTION_GALLERY}}
+  </section>
+  <section class="slide" style="justify-content: center;">
+    <span class="label">Ready to start?</span>
+    <h1 class="t-large" style="margin-bottom: 60px;">Обсудим<br /><span class="accent">Ваш Проект?</span></h1>
+    <div class="cta-buttons">
+      <a href="https://rovno.dev/order" class="btn cta">Оформить заказ</a>
+    </div>
+    <div class="socials">
+      <span class="label">Наши соц сети</span>
+      <nav class="socials__btns">
+        <a href="https://t.me/rovno_dev" target="_blank" class="btn text" aria-label="Telegram">
+          <img src="https://i.rovno.dev/images/mail/rovno.dev/tg.png" alt="" loading="lazy">
+        </a>
+        <a href="https://vk.com/rovno_dev" target="_blank" class="btn text" aria-label="VK">
+          <img src="https://i.rovno.dev/images/mail/rovno.dev/vk.png" alt="" loading="lazy">
+        </a>
+        <a href="https://pinterest.com/rovno_dev" target="_blank" class="btn text" aria-label="Pinterest">
+          <img src="https://i.rovno.dev/images/mail/rovno.dev/pinterest.png" alt="" loading="lazy">
+        </a>
+        <a href="https://dprofile.ru/rovno_dev" target="_blank" class="btn text" aria-label="Dprofile">
+          <img src="https://i.rovno.dev/images/mail/rovno.dev/dprofile.png" alt="" loading="lazy">
+        </a>
+        <a href="https://github.com/rovno-dev" target="_blank" class="btn text" aria-label="GitHub">
+          <img src="https://i.rovno.dev/images/mail/rovno.dev/github.png" alt="" loading="lazy">
+        </a>
+      </nav>
+    </div>
+  </section>
+</body>
+
+</html>
