@@ -1,0 +1,17 @@
+name: shap-yasa
+
+services:
+  agent:
+    build: .
+    image: shap-yasa-agent
+    container_name: shap-yasa-pipeline
+    volumes:
+      - .:/app
+      - ./workspace:/app/workspace
+    environment:
+      - SHAP_YASA_DIR=/app
+      - PROJECT_DIR=/app
+      - PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
+    tty: true
+    stdin_open: true
+    command: /bin/bash
