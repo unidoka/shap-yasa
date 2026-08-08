@@ -28,10 +28,9 @@ docker run --rm -it --entrypoint bash shap-yasa
 
 And execute commands inside container
 
-### Using setup script
+### Using local environment (Linux, MacOS, WSL)
 
-Run this script in terminal (use WSL on Windows):
-
+1. Run this setup script in terminal (use WSL on Windows):
 ```bash
 #!/bin/bash
 
@@ -93,14 +92,21 @@ echo "You can now run the demo generation script."
 echo "To apply the environment variable in this terminal, run:"
 echo "  source ~/.bashrc"
 ```
+2. Add SHAP_YASA_DIR to make scripts executable globally:
+> ⚠️ Change path before executing
+```bash
+echo 'export SHAP_YASA_DIR=YOUR_PATH_HERE' >> ~/.bashrc && source ~/.bashrc
+```
 
 ## Usage
 
-1. **Capture Screenshots:**
-  `node scripts/1-capture.js "client-name" "path/to/mockup/index.html"`
-2. **Generate Presentation:**
-  `node scripts/2-present.js "client-name" "path/to/content.json"`
-  *Note: content.json should define hero_title, hero_description, and an array of 'updates' with section IDs.*
-3. **Generate Email & Messenger Text:**
-  `node scripts/3-email.js "client-name" "path/to/content.json"`
-  `node scripts/4-messenger.js "client-name" "path/to/content.json"`
+### Chat AI's
+
+1. Get all context and files content using repomix:
+```
+repomix .
+```
+2. Add this file in chat
+3. Type:
+  - Find websites — to find websites
+  - Bash mode. Clone URL or JSON report — to redisign specific website

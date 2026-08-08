@@ -1,21 +1,17 @@
 const fs = require('fs');
 const path = require('path');
-const SITE_NAME = process.argv[2] || 'demo';
-const JSON_DATA = JSON.parse(fs.readFileSync(process.argv[3] || 'content.json', 'utf8'));
-const OUTPUT_DIR = path.join(process.cwd(), 'dist', SITE_NAME);
+const TARGET_DIR = process.argv[2];
+const JSON_DATA = JSON.parse(fs.readFileSync(process.argv[3], 'utf8'));
 
 const text = `
-👋 Привет! Это Нияз из Rovno.dev.
+Добрый день!
 
-Для проекта ${JSON_DATA.hero_title} мы подготовили концепт обновления. 
-Основной фокус: ${JSON_DATA.hero_description}
-
-Посмотреть презентацию: [ССЫЛКА]
+Мы подготовили для вас обновлённый концепт главной страницы вашего сайта 
+Основной фокус мы сделали на ${JSON_DATA.hero_description}
 
 Буду рад обсудить запуск!
-Заказать аудит: https://rovno.dev/order
-Личка: https://t.me/niyaz_gimadiev
+Наш сайт: https://rovno.dev
 `;
 
-fs.writeFileSync(path.join(OUTPUT_DIR, 'messenger.txt'), text);
-console.log(`📱 Messenger text generated: ${OUTPUT_DIR}/messenger.txt`);
+fs.writeFileSync(path.join(TARGET_DIR, 'messenger.txt'), text);
+console.log(`📱 Messenger text generated: ./messenger.txt`);
