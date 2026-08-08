@@ -51,15 +51,22 @@ cat << 'EOF' > "$TARGET_DIR/content.json"
 }
 EOF
 
-# 3. Call core scripts (Passing absolute TARGET_DIR for flat output)
-# Stage 1: Capture
+# 3. Call core scripts
+# Stage 1: Capture (Делаем скриншоты нашего макета)
 node "$P_DIR/scripts/capture-redisign-site.js" "$TARGET_DIR" "$TARGET_DIR/index.html"
-# Stage 2: Presentation
+
+# Stage 2: Presentation HTML (Собираем HTML версию слайдов)
 node "$P_DIR/scripts/make-presentation.js" "$TARGET_DIR" "$TARGET_DIR/content.json"
+
+# Stage 2.5: PDF Export (Конвертируем слайды в вертикальный A4 PDF)
+node "$P_DIR/scripts/make-pdf.js" "$TARGET_DIR"
+
 # Stage 3: Email
 node "$P_DIR/scripts/make-email-html.js" "$TARGET_DIR" "$TARGET_DIR/content.json"
+
 # Stage 4: Messenger
 node "$P_DIR/scripts/make-text-for-messengers.js" "$TARGET_DIR" "$TARGET_DIR/content.json"
 
-echo "✅ Package created: $TARGET_DIR"
+echo "✅ Package created with PDF: $TARGET_DIR"
+echo "📄 PDF Path: $TARGET_DIR/presentation.pdf"
 ```

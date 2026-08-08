@@ -23,7 +23,6 @@ html = html.replace('{{hero_title}}', JSON_DATA.hero_title || '')
   .replace('{{hero_subtitle}}', JSON_DATA.hero_subtitle || '')
   .replace('{{hero_description}}', JSON_DATA.hero_description || '');
 
-// Full Screenshot
 const fullPath = path.join(TARGET_DIR, 'full.base64');
 if (fs.existsSync(fullPath)) {
   const fullB64 = fs.readFileSync(fullPath, 'utf8');
@@ -32,7 +31,6 @@ if (fs.existsSync(fullPath)) {
   console.warn(`⚠️ Warning: full.base64 not found in ${TARGET_DIR}`);
 }
 
-// Sections
 let galleryHtml = '';
 JSON_DATA.updates.forEach(item => {
   const sectionFile = path.join(TARGET_DIR, `section-${item.id}.base64`);
