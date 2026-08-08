@@ -103,7 +103,7 @@ echo 'export SHAP_YASA_DIR=YOUR_PATH_HERE' >> ~/.bashrc && source ~/.bashrc
 ### Chat AI's
 
 1. Get all context and files content using repomix:
-```
+```bash
 repomix .
 ```
 2. Add this file in chat

@@ -26,6 +26,7 @@ Dockerfile
 LICENSE
 
 README.md
+README*.md
 
 .gitignore
 

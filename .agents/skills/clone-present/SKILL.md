@@ -25,9 +25,20 @@ argument-hint: "<url or report content>"
 ## BASH OUTPUT TEMPLATE
 
 ```bash
-# 1. Setup paths
+# 1. Setup paths (don't forget to add SHAP_YASA_DIR variable)
+if [ -z "${SHAP_YASA_DIR}" ]; then
+    echo "❌ Error: SHAP_YASA_DIR variable is not set."
+    echo "Fix: export SHAP_YASA_DIR=/path/to/shap-yasa"
+    exit 1
+fi
+
+if [ ! -f "${SHAP_YASA_DIR}/.env" ]; then
+    echo "❌ Error: .env file not found at ${SHAP_YASA_DIR}/.env"
+    exit 1
+fi
+
 source ${SHAP_YASA_DIR}/.env
-P_DIR=${PROJECT_DIR}
+
 CLIENT="[client-slug]"
 # Generate flat folder like in the screenshot
 TARGET_DIR="$(pwd)/${CLIENT}-redesign-$(date +%s)"
@@ -53,19 +64,19 @@ EOF
 
 # 3. Call core scripts
 # Stage 1: Capture (Делаем скриншоты нашего макета)
-node "$P_DIR/scripts/capture-redisign-site.js" "$TARGET_DIR" "$TARGET_DIR/index.html"
+node "$SHAP_YASA_DIR/scripts/capture-redisign-site.js" "$TARGET_DIR" "$TARGET_DIR/index.html"
 
 # Stage 2: Presentation HTML (Собираем HTML версию слайдов)
-node "$P_DIR/scripts/make-presentation.js" "$TARGET_DIR" "$TARGET_DIR/content.json"
+node "$SHAP_YASA_DIR/scripts/make-presentation.js" "$TARGET_DIR" "$TARGET_DIR/content.json"
 
 # Stage 2.5: PDF Export (Конвертируем слайды в вертикальный A4 PDF)
-node "$P_DIR/scripts/make-pdf.js" "$TARGET_DIR"
+node "$SHAP_YASA_DIR/scripts/make-pdf.js" "$TARGET_DIR"
 
 # Stage 3: Email
-node "$P_DIR/scripts/make-email-html.js" "$TARGET_DIR" "$TARGET_DIR/content.json"
+node "$SHAP_YASA_DIR/scripts/make-email-html.js" "$TARGET_DIR" "$TARGET_DIR/content.json"
 
 # Stage 4: Messenger
-node "$P_DIR/scripts/make-text-for-messengers.js" "$TARGET_DIR" "$TARGET_DIR/content.json"
+node "$SHAP_YASA_DIR/scripts/make-text-for-messengers.js" "$TARGET_DIR" "$TARGET_DIR/content.json"
 
 echo "✅ Package created with PDF: $TARGET_DIR"
 echo "📄 PDF Path: $TARGET_DIR/presentation.pdf"

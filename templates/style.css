@@ -58,7 +58,7 @@ body {
 
 .t-huge {
   font-family: var(--font-display);
-  font-size: 100px;
+  font-size: 80px;
   line-height: 1.1;
   text-transform: uppercase;
   margin: 0;
@@ -74,7 +74,7 @@ body {
 
 .label {
   font-size: 14px;
-  letter-spacing: 0.4em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--text-low);
   margin-bottom: 30px;
@@ -99,7 +99,6 @@ body {
   background: var(--surface);
   border-radius: 20px;
   margin-top: 20px;
-  flex-grow: 1;
   position: relative;
   overflow: hidden;
 }
@@ -123,7 +122,7 @@ body {
 
 .gallery-desc {
   padding: 20px 10px;
-  font-size: 18px;
+  font-size: 16px;
   color: var(--text-medium);
   line-height: 1.5;
 }
